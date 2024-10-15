@@ -1,15 +1,10 @@
 class Solution {
 public:
     long long minimumSteps(string s) {
-        long long b=0,e=s.size()-1,res=0,n=s.size();
-        while(b<e){
-            while(b<e && s[b]!='1') b++;
-            while(b<e && s[e]!='0') e--;
-            if(b==e) return res;
-            res+=e-b;
-            e--;
-            b++;
-        }
+        long long res=0,cnt=0,n=s.size();
+        for(int i:s) cnt+=i-'0';
+        for(int i=0;i<n-cnt;i++) if(s[i]=='1') res-=i;
+        for(int i=n-cnt;i<n;i++) if(s[i]=='0') res+=i; 
         return res;
     }
 };
