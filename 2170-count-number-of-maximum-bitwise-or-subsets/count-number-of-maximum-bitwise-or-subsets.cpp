@@ -1,18 +1,13 @@
 class Solution {
     int res=0,target=0;
-    void rec(vector<int> &nums,int vis,int curr){
+    void rec(vector<int> &nums,int vis,int curr,int x=0){
         int n=nums.size();
         if(curr==n){
-            int x=0;
-            for(int i=0;i<n;i++){
-                if(vis&(1<<i))
-                    x|=nums[i];
-            }
             if(x==target) res++;
             return;
         }
-        rec(nums,vis,curr+1);
-        rec(nums,vis|(1<<curr),curr+1);
+        rec(nums,vis,curr+1,x);
+        rec(nums,vis|(1<<curr),curr+1,x|nums[curr]);
     }
 public:
     int countMaxOrSubsets(vector<int>& nums) {
