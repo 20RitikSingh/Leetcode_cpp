@@ -1,17 +1,20 @@
 class Solution {
 public:
     char findKthBit(int n, int k) {
-        string s="0";
-        for(int i=1;i<n;i++){
-            string t=s;
-            for(char &j:t){
-                if(j=='0') j++;
-                else j--;
-            }
-            reverse(t.begin(),t.end());
-            s=s+"1"+t;
+        if(n==1) return '0';
+        int t=pow(2,n)-1;
+        if(k==(t+1)/2) return '1';
+        if(k>(t+1)/2){
+            k-=(t+1)/2;
+            char ch=findKthBit(n-1,pow(2,n-1)-k);
+            // cout<<n-1<<" "<<pow(2,n-1)-k<<" not:"<<ch<<endl;
+            if(ch=='0') return '1';
+            return '0'; 
         }
-        return s[k-1];
+        char ch=findKthBit(n-1,k);
+        // cout<<n-1<<" "<<k<<" "<<ch<<endl;
+        return ch;
     }
 };
-// 1 3 9 27 81
+// 1 3 7 15 31 63
+//  2 4 8 16 32
