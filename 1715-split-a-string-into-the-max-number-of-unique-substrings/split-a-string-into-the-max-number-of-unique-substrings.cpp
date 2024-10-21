@@ -1,23 +1,21 @@
 class Solution {
     unordered_set<string> set;
-    int res=1;
-    int rec(string s){
-        if(s==""){
-            res=max(res,(int)set.size());
-            return 0;
+    // vector<int> 
+    int rec(string s,int idx=0){
+        int n=s.size(),res=0;
+        if(idx==n){
+            return set.size();
         }
-        int n=s.size();
-        for(int i=1;i<=n;i++){
-            if(set.count(s.substr(0,i))) continue;
-            set.insert(s.substr(0,i));
-            rec(s.substr(i,n-i));
-            set.erase(s.substr(0,i));
+        for(int i=1;i<=n-idx;i++){
+            if(set.count(s.substr(idx,i))) continue;
+            set.insert(s.substr(idx,i));
+            res=max(res,rec(s,idx+i));
+            set.erase(s.substr(idx,i));
         }
-        return 0;
+        return res;
     }
 public:
     int maxUniqueSplit(string s) {
-        rec(s);
-        return res;
+        return rec(s);
     }
 };
