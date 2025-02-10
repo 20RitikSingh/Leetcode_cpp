@@ -7,8 +7,6 @@ class Solution {
             if(mi%points[i]) v[i]++;
         }
         int last=-1;
-        // for(int i:v) cout<<i<<" ";
-        // cout<<endl;
         for(int i=0;i<n;i++){
             if(v[i]>0){
                 m-=i-last-1;
@@ -24,7 +22,6 @@ public:
         if(points.size()>m) return 0;
         long long low=0,high=*max_element(points.begin(),points.end()),ans=0;
         high*=m;
-        // for(int i=0;i<10;i++) cout<<i<<" : "<<(bool)check(points,m,i)<<endl;
         while(low<high){
             long long mid=low+(high-low)/2;
             if(check(points,m,mid)){
