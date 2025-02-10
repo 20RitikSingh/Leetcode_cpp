@@ -6,18 +6,15 @@ public:
         vector<vector<vector<ll>>> dp(2,vector<vector<ll>>(10,vector<ll>(10,0)));
         ll ans=0;
         for(int idx=0;idx<s.size();idx++){
-            for(int d=0;d<10;d++){
+            for(int d=1;d<10;d++){
                 for(int r=0;r<10;r++){
-                    if(d==0){ 
-                        dp[1][d][r]= 0;
-                        continue;
-                    }
+
                     if(idx==0){ 
                         dp[1][d][r]= (s[0]%d)==r;
                         continue;
                     }
 
-                    ll res=(s[idx]%d)==r;
+                    dp[1][d][r]=(s[idx]%d)==r;
 
                     if((10%d)==0){
                         if(r!=(s[idx]%d)){
@@ -25,13 +22,13 @@ public:
                             continue;
                         }
                         for(int i=0;i<d;i++){
-                            res+=dp[0][d][i];
+                            dp[1][d][r]+=dp[0][d][i];
                         }
-                    }else
+                    }else{
                         for(int i=0;(i*d+r-(s[idx]%d))/(10%d)<d;i++){
-                            if((i*d+r-(s[idx]%d))>=0 && (i*d+r-(s[idx]%d))%(10%d)==0) res+=dp[0][d][(i*d+r-(s[idx]%d))/(10%d)];
+                            if((i*d+r-(s[idx]%d))>=0 && (i*d+r-(s[idx]%d))%(10%d)==0) dp[1][d][r]+=dp[0][d][(i*d+r-(s[idx]%d))/(10%d)];
                         }
-                    dp[1][d][r]=res;
+                    }
                 }
             }
             ans+=dp[1][s[idx]][0];
