@@ -1,19 +1,17 @@
 class Solution {
 public:
     vector<int> assignElements(vector<int>& groups, vector<int>& elements) {
-        int n=groups.size(),m=elements.size(),mx=*max_element(groups.begin(),groups.end());
-        vector<int> v(mx+1,-1),res(n,-1);
-        for(int i=0;i<m;i++){
-            for(int j=1;j*elements[i]<mx+1;j++){
-                if(v[j*elements[i]]<0){
-                    v[j*elements[i]]=i;
-                }else if(elements[i]%elements[v[j*elements[i]]]==0) break;
+        vector<int> v(100001, 100001) ;
+        for(int i=0;i<elements.size();i++) v[elements[i]] = min(v[elements[i]],i) ;
+        int n = groups.size(); vector<int> ans(n,100001) ;
+        for(int i=0;i<groups.size();i++){
+            for(int j=1;j<319;j++){
+                if(groups[i]%j == 0){
+                    int a = j;  int b = groups[i]/a;
+                    ans[i] = min({ans[i],v[a],v[b]}) ;
+                }
             }
-        }
-        // for(int i=0;i<mx+1;i++) cout<<i<<" : "<<v[i]<<" , ";
-        for(int i=0;i<n;i++){
-            res[i]=v[groups[i]];
-        }
-        return res;
+        }   
+        for(int i=0;i<n;i++) if(ans[i] == 100001) ans[i] = -1 ; return ans ;
     }
 };
