@@ -1,6 +1,7 @@
 class Solution {
 public:
     int maximumSum(vector<int>& nums) {
+        int mx=-1;
         vector<vector<int>> v(82);
         for(int i:nums){
             int x=0,j=i;
@@ -13,11 +14,8 @@ public:
                 if(v[x][0]<v[x][1]) swap(v[x][0],v[x][1]);
                 v[x][1]=max(j,v[x][1]);
             }
-        }
-        int mx=-1;
-        for(int i=0;i<82;i++){
-            if(v[i].size()<2) continue;
-            mx=max(mx,v[i][0]+v[i][1]);
+            if(v[x].size()<2) continue;
+            mx=max(mx,v[x][0]+v[x][1]);
         }
         return mx;
     }
