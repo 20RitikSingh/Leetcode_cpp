@@ -2,7 +2,7 @@ class Solution {
 public:
     int maximumSum(vector<int>& nums) {
         int mx=-1;
-        vector<int> v(82,-1e9-1);
+        vector<int> v(82,-2e9);
         for(int i:nums){
             int x=0,j=i;
             while(i>0){
