@@ -6,15 +6,15 @@ public:
     }
     
     void add(int num) {
-        v.push_back(num);
+        if(!num) v=vector<int>();
+        else if(v.empty()) v.push_back(num);
+        else v.push_back(num*v.back());
     }
     
     int getProduct(int k) {
-        int ans=1;
-        for(int i=0;i<k;i++){
-            ans*=v[v.size()-i-1];
-        }
-        return ans;
+        if(k>v.size()) return 0;
+        else if(k==v.size()) return v.back();
+        return v.back()/v[v.size()-k-1];
     }
 };
 
