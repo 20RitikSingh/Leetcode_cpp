@@ -7,8 +7,9 @@ class Solution {
         while(a<n){
             a*=10;
             f|=rec(n/a,s+n%a,k);
+            if(f) return 1;
         }
-        return f;
+        return 0;
     }
     void pre(){
         v[1]=1;
@@ -18,8 +19,10 @@ class Solution {
         }
     }
 public:
-    int punishmentNumber(int n) {
+    Solution(){
         pre();
+    }
+    int punishmentNumber(int n) {
         return v[n];
     }
 };
