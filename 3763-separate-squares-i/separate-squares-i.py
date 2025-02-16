@@ -16,7 +16,7 @@ class Solution:
         high = max_y
         
         # Perform binary search with sufficient iterations for precision
-        for _ in range(100):
+        for _ in range(50):
             mid = (low + high) / 2
             sa = 0.0
             for x, y, l in squares:
