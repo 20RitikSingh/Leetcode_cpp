@@ -13,12 +13,13 @@ public:
         set<string> set;
         int n=nums[0].size();
         int i=0;
-        while(i<pow(2,n)){
-            set.insert(numtostr(i++,n));
-        }
         for(auto str:nums){
-            set.erase(str);
+            set.insert(str);
         }
-        return *set.begin();
+        while(i<pow(2,n)){
+            string s=numtostr(i++,n);
+            if(!set.count(s)) return s;
+        }
+        return "";
     }
 };
