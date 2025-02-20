@@ -1,25 +1,11 @@
 class Solution {
-    string numtostr(int n,int sz){
-        string s(sz,'0');
-        for(int i=0;i<sz;i++){
-            if(n%2) s[i]++;
-            n/=2;
-        }
-        reverse(s.begin(),s.end());
-        return s;
-    }
 public:
     string findDifferentBinaryString(vector<string>& nums) {
-        set<string> set;
+        string s=nums[0];
         int n=nums[0].size();
-        int i=0;
-        for(auto str:nums){
-            set.insert(str);
+        for(int i=0;i<n;i++){
+            s[i]=((nums[i][i]-'0')+1)%2+'0';
         }
-        while(i<pow(2,n)){
-            string s=numtostr(i++,n);
-            if(!set.count(s)) return s;
-        }
-        return "";
+        return s;
     }
 };
