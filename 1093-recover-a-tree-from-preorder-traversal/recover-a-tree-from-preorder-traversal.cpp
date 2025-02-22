@@ -15,33 +15,31 @@ class Solution {
         int c=0,i=s.size()-1;
         while(i>=0 && s[i--]=='-') c++;
         //cout<<"first c: "<<c<<endl;
-        if(c>l){
-            while(s.back()=='-') s.pop_back();
-            string t="";
-            while(s.size() && s.back()!='-'){
-                t.push_back(s.back());
-                s.pop_back();
-            }
-            //cout<<"num is: "<<t<<endl;
-            root->left=new TreeNode(stoi(t));
-            rec(root->left,s,l+1);
-            //cout<<"back to level:"<<l<<" node:"<<root->val<<" string is: "<<s<<endl;
-            c=0;
-            i=s.size()-1;
-            while(i>=0 && s[i--]=='-') c++;
-            //cout<<"second c: "<<c<<endl;
-            if(c>l){
-                while(s.back()=='-') s.pop_back();
-                string t="";
-                while(s.size() && s.back()!='-'){
-                    t.push_back(s.back());
-                    s.pop_back();
-                }
-                //cout<<"num is: "<<t<<endl;
-                root->right=new TreeNode(stoi(t));
-                rec(root->right,s,l+1);
-            }
+        if(c<=l) return;
+        while(s.back()=='-') s.pop_back();
+        string t="";
+        while(s.size() && s.back()!='-'){
+            t.push_back(s.back());
+            s.pop_back();
         }
+        //cout<<"num is: "<<t<<endl;
+        root->left=new TreeNode(stoi(t));
+        rec(root->left,s,l+1);
+        //cout<<"back to level:"<<l<<" node:"<<root->val<<" string is: "<<s<<endl;
+        c=0;
+        i=s.size()-1;
+        while(i>=0 && s[i--]=='-') c++;
+        //cout<<"second c: "<<c<<endl;
+        if(c<=l) return;
+        while(s.back()=='-') s.pop_back();
+        t="";
+        while(s.size() && s.back()!='-'){
+            t.push_back(s.back());
+            s.pop_back();
+        }
+        //cout<<"num is: "<<t<<endl;
+        root->right=new TreeNode(stoi(t));
+        rec(root->right,s,l+1);
     }
 public:
     TreeNode* recoverFromPreorder(string s) {
