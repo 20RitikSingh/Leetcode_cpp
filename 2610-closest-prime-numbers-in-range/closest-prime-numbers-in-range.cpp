@@ -17,11 +17,10 @@ public:
     vector<int> closestPrimes(int left, int right) {
         if(!composite[0]) init();
         auto it1=lower_bound(prime.begin(),prime.end(),left);
-        auto it2=upper_bound(prime.begin(),prime.end(),right);
-        it2--;
+        auto it2=upper_bound(prime.begin(),prime.end(),right)-1;
         if(it2-it1<1) return {-1,-1};
         for(auto it=it1;it<it2;it++){
-            if((it+1)<prime.end() && *(it+1)<=right && *(it1+1)-*it1>*(it+1)-*it) it1=it;
+            if((it+1)<prime.end() && *(it1+1)-*it1>*(it+1)-*it) it1=it;
         }
         return {*it1,*(it1+1)};
     }
