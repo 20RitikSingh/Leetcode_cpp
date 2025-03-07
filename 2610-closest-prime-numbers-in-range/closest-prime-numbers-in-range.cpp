@@ -1,5 +1,5 @@
 #define MAXNUM 1000001
-bool composite[MAXNUM];
+bitset<MAXNUM> composite;
 vector<int> prime;
 class Solution {
 public:
