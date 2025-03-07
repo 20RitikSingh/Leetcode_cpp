@@ -2,7 +2,11 @@
 bool composite[MAXNUM];
 vector<int> prime;
 void init(){
-    static bool seive=[](){
+    
+}
+class Solution {
+public:
+    Solution(){static bool seive=[](){
         composite[0]=1;
         composite[1]=1;
         for(int i=2;i<MAXNUM;i++){
@@ -13,11 +17,7 @@ void init(){
             }
         }
         return 1;
-    }();
-}
-class Solution {
-public:
-    Solution(){init();}
+    }();}
     vector<int> closestPrimes(int left, int right) {
         auto it1=lower_bound(prime.begin(),prime.end(),left);
         auto it2=upper_bound(prime.begin(),prime.end(),right)-1;
