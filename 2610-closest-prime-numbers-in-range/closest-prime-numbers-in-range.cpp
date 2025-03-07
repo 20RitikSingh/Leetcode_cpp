@@ -1,10 +1,12 @@
 #define MAXNUM 1000001
 bool composite[MAXNUM];
+vector<int> prime;
 void init(){
     composite[0]=1;
     composite[1]=1;
     for(int i=2;i<MAXNUM;i++){
         if(composite[i]) continue;
+        prime.push_back(i);
         for(int j=i;1ll*i*j<MAXNUM;j++){
             composite[i*j]=1;
         }
@@ -14,17 +16,13 @@ class Solution {
 public:
     vector<int> closestPrimes(int left, int right) {
         if(!composite[0]) init();
-        vector<int> ans,res;
-        int k=0;
-        for(int i=left;i<=right;i++){
-            if(composite[i]) continue;
-            if(ans.size()>1 && ans[k+1]-ans[k]>i-ans.back()) k=ans.size()-1;
-            ans.push_back(i);
+        auto it1=lower_bound(prime.begin(),prime.end(),left);
+        auto it2=upper_bound(prime.begin(),prime.end(),right);
+        it2--;
+        if(it2-it1<1) return {-1,-1};
+        for(auto it=it1;it<it2;it++){
+            if((it+1)<prime.end() && *(it+1)<=right && *(it1+1)-*it1>*(it+1)-*it) it1=it;
         }
-        cout<<composite[left]<<endl;
-        for(int i:ans) cout<<i<<" ";
-        if(ans.size()<2)
-            return {-1,-1};
-        return {ans[k],ans[k+1]};
+        return {*it1,*(it1+1)};
     }
 };
