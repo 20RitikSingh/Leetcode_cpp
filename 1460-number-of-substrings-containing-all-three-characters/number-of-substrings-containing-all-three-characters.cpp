@@ -11,6 +11,7 @@ public:
                     b = 1;
                 if (s[j] == 'c')
                     c = 1;
+                // if(v[j][a][b][c]>-1) return v[j][a][b][c];
                 if (a & b & c) {
                     res += s.size() - j;
                     break;
