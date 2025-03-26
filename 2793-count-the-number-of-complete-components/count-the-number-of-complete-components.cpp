@@ -25,7 +25,6 @@ public:
             c++;
         }
         for(int i=0;i<n;i++){
-            // cout<<i<<" "<<parent[i]<<" "<<count[parent[i]]<<endl;
             if(v[parent[i]] && adj[i].size()<count[parent[i]]){
                 c--;
                 v[parent[i]]=0;
