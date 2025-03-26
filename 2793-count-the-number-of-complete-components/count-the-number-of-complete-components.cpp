@@ -1,25 +1,35 @@
 class Solution {
-    int dfs(vector<unordered_set<int>> &adj,vector<bool> &v,vector<bool> &vis, int curr){
-        vis[curr]=1;
+    int dfs(vector<vector<int>> &adj,vector<bool> &v,vector<int> &parent, int curr,int &c,int p){
+        parent[curr]=p;
         v[curr]=1;
-        bool x=1;
-        for(int i=0;i<vis.size();i++) if(curr!=i && vis[i] && adj[curr].count(i)==0){ x=0; break;}
-        for(auto i:adj[curr]) if(!v[i]) x&=dfs(adj,v,vis,i);
-        return x;
+        c++;
+        for(auto i:adj[curr]) if(!v[i]) dfs(adj,v,parent,i,c,p);
+        return c;
     }
 public:
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
         vector<bool> v(n);
-        vector<unordered_set<int>> adj(n);
+        vector<int> parent(n),count(n);
+        vector<vector<int>> adj(n);
         int c=0;
         for(auto e:edges){
-            adj[e[0]].insert(e[1]);
-            adj[e[1]].insert(e[0]);
+            adj[e[0]].push_back(e[1]);
+            adj[e[1]].push_back(e[0]);
         }
         for(int i=0;i<n;i++){
             if(v[i]) continue;
-            vector<bool> vis(n);
-            c+=dfs(adj,v,vis,i);
+            int x=0;
+            parent[i]=i;
+            dfs(adj,v,parent,i,x,i);
+            count[i]=x-1;
+            c++;
+        }
+        for(int i=0;i<n;i++){
+            // cout<<i<<" "<<parent[i]<<" "<<count[parent[i]]<<endl;
+            if(v[parent[i]] && adj[i].size()<count[parent[i]]){
+                c--;
+                v[parent[i]]=0;
+            }
         }
         return c;
     }
