@@ -4,14 +4,22 @@ public:
         int n=recipes.size();
         unordered_set<string> got;
         for(auto s:supplies) got.insert(s);
-        // vector<unordered_set<string>> ing(n);
-        // for(int i=0;i<n;i++) ing[i]=unordered_set<string>(ingredients[i].begin(), ingredients[i].end());
+        vector<unordered_set<string>> ing(n);
+        for(int i=0;i<n;i++) ing[i]=unordered_set<string>(ingredients[i].begin(), ingredients[i].end());
         vector<string> res;
-        for(int i=0;i<n*n;i++){
-            if(recipes[i%n]=="") continue;
-            bool f=1;
-            for(string s:ingredients[i%n]) if(got.count(s)==0){ f=0; break;}
-            if(f){got.insert(recipes[i%n]); res.push_back(recipes[i%n]); recipes[i%n]="";}
+        queue<string> q;
+        for(auto s:supplies) q.push(s);
+        while(q.size()){
+            for(int i=0;i<n;i++){
+                if(recipes[i]=="") continue;
+                ing[i].erase(q.front());
+                if(ing[i].empty()){
+                    res.push_back(recipes[i]);
+                    q.push(recipes[i]);
+                    recipes[i]="";
+                }
+            }
+            q.pop();
         }
         return res;
     }
