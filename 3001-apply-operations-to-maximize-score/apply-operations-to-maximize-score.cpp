@@ -7,7 +7,7 @@ class Solution {
         if(y%2) return (((res*x)%MOD)*res)%MOD;
         return (res*res)%MOD;
     }
-    bool comp[100002];
+        bool comp[100002];
 public:
     int maximumScore(vector<int>& nums, int k) {
         comp[1]=1;
@@ -21,7 +21,6 @@ public:
         int n=nums.size();
         for(int i:nums){
             if(mp.find(i)!=mp.end()) continue;
-            int x=i;
             for(int j=2;j<=sqrt(i);j++){
                 if(i%j) continue;
                 if(!comp[j]) mp[i]++;
@@ -31,44 +30,28 @@ public:
         }
         priority_queue<pair<int,int>> pq;
         for(int i=0;i<n;i++){
-            // cout<<mp[nums[i]]<<" ";
             pq.push({nums[i],i});
         }
         long long x=1;
         vector<int> lft(n),rgt(n);
-        int mx=0;
-        stack<int> st;
+        stack<int> st,st1;
         for(int i=0;i<n;i++){
+            int j=n-1-i;
             while(!st.empty() && mp[nums[st.top()]]<mp[nums[i]]) st.pop();
             if(st.empty()) lft[i]=i;
             else lft[i]=i-st.top()-1;
             st.push(i);
+            while(!st1.empty() && mp[nums[st1.top()]]<=mp[nums[j]]) st1.pop();
+            if(st1.empty()) rgt[j]=n-1-j;
+            else rgt[j]=st1.top()-j-1;
+            st1.push(j);
         }
-        st=stack<int>();
-        for(int i=n-1;i>=0;i--){
-            while(!st.empty() && mp[nums[st.top()]]<=mp[nums[i]]) st.pop();
-            if(st.empty()) rgt[i]=n-1-i;
-            else rgt[i]=st.top()-i-1;
-            st.push(i);
-        }
-        // cout<<endl;
-        // for(int i=0;i<n;i++) cout<<lft[i]<<","<<rgt[i]<<" ";
         while(k){
             auto [val,idx]=pq.top();
             pq.pop();
             int l=lft[idx],r=rgt[idx];
-            // for(int i=idx+1;i<n;i++){
-            //     if(mp[nums[i]]>mp[val]) break;
-            //     r++;
-            // }
-            // for(int i=idx-1;i>=0;i--){
-            //     if(mp[nums[i]]>=mp[val]) break;
-            //     l++; 
-            // }
-            // cout<<l<<","<<r<<" ";
-            x*=pow(val,min(1LL*k,1LL*(l+1)*(r+1)));
+            x=(x*pow(val,min(1LL*k,1LL*(l+1)*(r+1))))%MOD;
             k-=min(1LL*k,1LL*(l+1)*(r+1));
-            x%=1000000007;
         }
         return x;
     }
