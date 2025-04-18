@@ -18,16 +18,11 @@ class NumArray {
         return query(2*idx+1,l,mid,ql,min(mid,qr))+query(2*idx+2,mid+1,r,max(ql,mid+1),qr);
     }
     int run(int idx,int l,int r,int pos,int val){
+        int mid=l+(r-l)/2;
         if(l==r){
             if(l==pos) seg[idx]=val;
-            return seg[idx];
-        }
-        int mid=l+(r-l)/2;
-        if(pos<=mid){
-            seg[idx]=run(2*idx+1,l,mid,pos,val)+seg[2*idx+2];
-            return seg[idx];
-        }
-        seg[idx]=seg[2*idx+1]+run(2*idx+2,mid+1,r,pos,val);
+        }else if(pos<=mid) seg[idx]=run(2*idx+1,l,mid,pos,val)+seg[2*idx+2];
+        else seg[idx]=seg[2*idx+1]+run(2*idx+2,mid+1,r,pos,val);
         return seg[idx];
     }
 public:
