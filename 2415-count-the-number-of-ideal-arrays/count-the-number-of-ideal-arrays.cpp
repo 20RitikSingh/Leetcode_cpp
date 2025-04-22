@@ -1,7 +1,6 @@
 #define MOD 1000000007
 class Solution {
     int ncr(int n, int r){
-        // code here
         int mod = 1000000007;
         if (r > n){
             return 0;
@@ -15,7 +14,6 @@ class Solution {
             denominator = (denominator * (i + 1)) % mod;
         }
         
-        // Calculate modular inverse of denominator
         long long inverse = 1;
         long long base = denominator;
         long long power = mod - 2;
@@ -27,12 +25,11 @@ class Solution {
             power >>= 1;
         }
         
-        // Calculate nCr modulo mod
         long long result = (numerator * inverse) % mod;
         return result;
     }
-    int count(int l,int r,int n){
-        long long res=1,c=0,k=r/l;
+    int count(int k,int n){
+        long long res=1,c=0;
         while (k % 2 == 0) {
             c++;
             k = k/2; 
@@ -56,9 +53,8 @@ public:
     int idealArrays(int n, int mx) {
         int res=0;
         for(int i=1;i<=mx;i++){
-            for(int j=i;j<=mx;j++){
-                if(j%i) continue;
-                res+=count(i,j,n)%MOD;
+            for(int j=1;i*j<=mx;j++){
+                res+=count(j,n)%MOD;
                 res%=MOD;
             }
         }
