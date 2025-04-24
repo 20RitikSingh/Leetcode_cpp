@@ -1,6 +1,6 @@
 class Solution {
     int twoSum(vector<int> &nums,int idx,vector<vector<int>> &res){
-        cout<<nums[idx]<<endl;
+        // cout<<nums[idx]<<endl;
         unordered_set<int> set;
         int n=nums.size();
         int i=idx;
