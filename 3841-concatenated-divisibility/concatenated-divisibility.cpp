@@ -11,9 +11,9 @@ class Solution {
         return c;
     }
     vector<int> v;
-    int dp[9000000];
+    int dp[65000][101];
     int rec(vector<int> &nums,int &msk,int k,int r){
-        if(dp[msk*1000+r]>=0) return dp[msk*1000+r];
+        if(dp[msk][r]) return dp[msk][r];
         bool f=0;
         for(int i=0;i<nums.size();i++){
             if(msk&(1<<i)) continue;
@@ -26,15 +26,14 @@ class Solution {
             }
             msk=msk^(1<<i);
         }
-        if(f){dp[msk*1000+r]=1; return 1;}
-        dp[msk*1000+r]=r;
+        if(f){dp[msk][r]=1; return 1;}
+        dp[msk][r]=r;
         return r;
     }
 public:
     vector<int> concatenatedDivisibility(vector<int>& nums, int k) {
         sort(nums.begin(),nums.end());
         int msk=0;
-        fill(begin(dp),end(dp),-1);
         rec(nums,msk,k,0);
         if(v.size()<nums.size()) v.clear();
         reverse(v.begin(),v.end());
