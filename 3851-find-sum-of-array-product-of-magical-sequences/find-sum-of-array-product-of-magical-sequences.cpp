@@ -9,7 +9,7 @@ class Solution {
     int inv(int n){
         return pow(n,mod-2);
     }
-    int dp[31][50][51][60];
+    int dp[31][31][51][60];
     int fact[31],invfact[31];
     int mod=1e9+7;
     int n;
