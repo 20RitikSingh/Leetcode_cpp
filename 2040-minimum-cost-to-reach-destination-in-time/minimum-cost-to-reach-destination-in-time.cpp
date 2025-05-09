@@ -9,7 +9,7 @@ class Solution {
 public:
     int minCost(int maxTime, vector<vector<int>>& edges, vector<int>& passingFees) {
         int n=passingFees.size();
-        vector<vector<int>> mat(n,vector<int>(n,1e9));
+        // vector<vector<int>> mat(n,vector<int>(n,1e9));
         vector<vector<pair<int,int>>> adj(n);
         for(auto e:edges){
             // mat[e[0]][e[1]]=min(mat[e[0]][e[1]],e[2]);
