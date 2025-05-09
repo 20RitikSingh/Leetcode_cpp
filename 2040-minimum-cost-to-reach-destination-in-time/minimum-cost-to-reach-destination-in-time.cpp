@@ -12,18 +12,20 @@ public:
         vector<vector<int>> mat(n,vector<int>(n,1e9));
         vector<vector<pair<int,int>>> adj(n);
         for(auto e:edges){
-            mat[e[0]][e[1]]=min(mat[e[0]][e[1]],e[2]);
-            mat[e[1]][e[0]]=min(mat[e[1]][e[0]],e[2]);
+            // mat[e[0]][e[1]]=min(mat[e[0]][e[1]],e[2]);
+            // mat[e[1]][e[0]]=min(mat[e[1]][e[0]],e[2]);
+            adj[e[0]].push_back({e[1],e[2]});
+            adj[e[1]].push_back({e[0],e[2]});
         }
-        for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                int t=min(mat[i][j],mat[j][i]);
-                if(mat[i][j]<1e9){
-                    adj[i].push_back({j,t});
-                    adj[j].push_back({i,t});
-                }
-            }
-        }
+        // for(int i=0;i<n;i++){
+        //     for(int j=i+1;j<n;j++){
+        //         int t=min(mat[i][j],mat[j][i]);
+        //         if(mat[i][j]<1e9){
+        //             adj[i].push_back({j,t});
+        //             adj[j].push_back({i,t});
+        //         }
+        //     }
+        // }
         priority_queue<vector<int>,vector<vector<int>>,cmp> q;
         vector<int> cost(n,1e9),time(n,1e9);
         q.push({0,passingFees[0],0});
