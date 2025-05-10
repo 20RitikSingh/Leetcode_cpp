@@ -4,18 +4,12 @@ public:
         int nz1=0,nz2=0;
         long long s1=0,s2=0;
         for(int i:nums1){
-            if(!i){
-                s1++;
-                nz1++;
-            }
-            s1+=i;
+            nz1+=(i==0);
+            s1+=i+(i==0);
         }
         for(int i:nums2){
-            if(!i){
-                s2++;
-                nz2++;
-            }
-            s2+=i;
+            nz2+=(i==0);
+            s2+=i+(i==0);
         }
         if(s1>s2){
             if(nz2==0) return -1;
