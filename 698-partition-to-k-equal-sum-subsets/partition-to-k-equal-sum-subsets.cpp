@@ -9,10 +9,6 @@ class Solution {
         if(sum%target) return 0;
         return sum/target;
     }
-    // bool check2(int msk1,int msk2){
-    //     if((msk1&msk2)==msk1) return 1;
-    //     return 0;
-    // }
 public:
     bool canPartitionKSubsets(vector<int>& nums, int k) {
         int n=nums.size();
