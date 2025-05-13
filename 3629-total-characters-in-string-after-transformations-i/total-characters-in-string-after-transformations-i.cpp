@@ -1,11 +1,14 @@
+int dp[100001],mod=1e9+7;
+long long rec(int t){
+    if(t<0) return 1;
+    if(dp[t]==0) dp[t]=(dp[t]+rec(t-26)+rec(t-25))%mod;
+    return dp[t];
+}
 class Solution {
-    int dp[100001],mod=1e9+7,res=0;
 public:
     int lengthAfterTransformations(string s, int t) {
-        if(s=="ab" && t<0) return 1;
-        if(s=="ab" && dp[t]==0) dp[t]=(0LL+dp[t]+lengthAfterTransformations("ab",t-26)+lengthAfterTransformations("ab",t-25))%mod;
-        if(s=="ab")return dp[t];
-        for(char ch:s) res=(0LL+res+lengthAfterTransformations("ab",t-'z'+ch-1))%mod;
+        int res=0;
+        for(char ch:s) res=(res+rec(t-'z'+ch-1))%mod;
         return res;
     }
 };
