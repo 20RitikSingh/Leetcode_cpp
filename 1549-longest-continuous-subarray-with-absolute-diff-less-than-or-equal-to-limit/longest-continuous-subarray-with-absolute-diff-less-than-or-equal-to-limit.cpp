@@ -16,7 +16,6 @@ public:
             mi=set.begin()->second;
             while(q.size() && q.top().second<low) q.pop();
             mx=q.top().second;
-            cout<<mx<<" "<<mi<<endl;
             while(high<n && nums[mx]-nums[mi]<=limit){
                 res=max(res,high-low);
                 if(nums[mx]<=nums[high]) mx=high;
@@ -25,12 +24,10 @@ public:
                 set.insert({nums[high],high});
                 mx=max(low,mx);
                 mi=max(low,mi);
-                cout<<high<<endl;
                 high++;
             }
             if(nums[mx]-nums[mi]<=limit) res=max(res,high-low);
             low=min(mi,mx)+1;
-            cout<<"low"<<low<<endl;
         }
         return res;
     }
