@@ -24,6 +24,7 @@ public:
         int n=nums.size();
         vector<vector<int>> adj(k+1);
         memset(dp,-1,sizeof(dp));
+
         int target=0;
         for(int i:nums) target+=i;
         if(target%k) return 0;
@@ -34,6 +35,7 @@ public:
             if(x%target) continue;
             adj[x/target].push_back(i);
         }
+        
         return rec(adj,1,0,k);
     }
 };
