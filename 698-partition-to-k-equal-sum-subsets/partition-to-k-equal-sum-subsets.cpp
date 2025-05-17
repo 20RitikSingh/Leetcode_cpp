@@ -1,32 +1,39 @@
 class Solution {
-    int check(vector<int> &nums,int msk,int target){
+    int subsetSum(vector<int> &nums,int msk){
         int n=nums.size(),sum=0;
         for(int i=0;i<n;i++){
             if(msk&(1<<i)){ 
                 sum+=nums[i];
             }
         }
-        if(sum%target) return 0;
-        return sum/target;
+        return sum;
+    }
+    int dp[17][66000];
+    bool rec(vector<vector<int>> &adj,int curr,int prev,int k){
+        if(curr>k) return 1;
+        if(dp[curr][prev]>=0) return dp[curr][prev];
+        dp[curr][prev]=0;
+        for(int i:adj[curr]){
+            if((i&prev)!=prev || i<prev) continue;
+            if(rec(adj,curr+1,i,k)){dp[curr][prev]=1; return 1;}
+        }
+        return 0;
     }
 public:
     bool canPartitionKSubsets(vector<int>& nums, int k) {
         int n=nums.size();
-        vector<int> v(1<<n),u(1<<n);
+        vector<vector<int>> adj(k+1);
+        memset(dp,-1,sizeof(dp));
         int target=0;
         for(int i:nums) target+=i;
         if(target%k) return 0;
         target/=k;
+
         for(int i=0;i<1<<n;i++){
-            u[i]=check(nums,i,target);
-            if(!u[i]) continue;
-            v[i]++;
-            for(int j=0;j<i;j++){
-                if(!u[j]) continue;
-                if(u[j]+1==u[i] && (j&i)==j) v[i]=max(v[i],1+v[j]);
-            }
-            if(v[i]>=k) return 1; 
+            int x=subsetSum(nums,i);
+            if(x%target) continue;
+            adj[x/target].push_back(i);
         }
-        return 0;
+        return rec(adj,1,0,k);
     }
 };
