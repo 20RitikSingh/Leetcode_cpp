@@ -3,11 +3,8 @@ class Solution {
     int rec(vector<int> &arr,int k,int idx){
         if(idx>=arr.size()) return 0;
         if(dp[idx]!=-1) return dp[idx];
-        int mx=arr[idx];
-        for(int i=idx;i<arr.size() && i<idx+k;i++){
-            mx=max(arr[i],mx);
+        for(int i=idx,mx=arr[idx];i<arr.size() && i<idx+k && (mx=max(arr[i],mx));i++)
             dp[idx]=max(dp[idx],mx*(i-idx+1)+rec(arr,k,i+1));
-        }
         return dp[idx];
     }
 public:
