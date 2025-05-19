@@ -1,6 +1,6 @@
 class Solution {
     int dp[1000][1000];
-    int nxt[1000][100];
+    int nxt[1000][60];
     int rec(string s,string t, int i,int j){
         if(j==t.size()) return 1;
         if(i==s.size() || t.size()-j>s.size()-i) return 0;
@@ -17,7 +17,7 @@ public:
     int numDistinct(string s, string t) {
         memset(dp,-1,sizeof(dp));
         for(int i=s.size()-2;i>=0;i--){
-            for(int j=0;j<100;j++) nxt[i][j]=nxt[i+1][j];
+            for(int j=0;j<60;j++) nxt[i][j]=nxt[i+1][j];
             nxt[i][s[i+1]-'A']=i+1;
         }
         return rec(s,t,0,0);
