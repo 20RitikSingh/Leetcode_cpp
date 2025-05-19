@@ -9,7 +9,7 @@ class Solution {
         dp[i][j]=0;
 
         int k=nxt[i][t[j]-'A'];
-        if(k!=0) dp[i][j]+=rec(s,t,k+1,j)+rec(s,t,k+1,j+1);
+        if(k!=0) dp[i][j]+=rec(s,t,k,j);
         if(s[i]==t[j]) dp[i][j]+=rec(s,t,i+1,j+1);
         return dp[i][j];
     }
