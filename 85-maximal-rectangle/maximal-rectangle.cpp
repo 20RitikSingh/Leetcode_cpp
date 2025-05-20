@@ -1,6 +1,5 @@
 class Solution {
     int rec(vector<int>& v) {
-        for(int i:v) cout<<i<<" ";
         int n=v.size(),res=0;
         vector<int> prevmin(n,-1);
         stack<int> st;
@@ -21,18 +20,20 @@ class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& grid) {
         int res=0,n=grid.size(),m=grid[0].size();
-        vector<vector<int>> v(n,vector<int>(m));
-        for(int k=0;k<n;k++){
-            vector<int> f(m,1);
-            for(int i=k;i<n;i++){
-                for(int j=0;j<m;j++){
-                    if(f[j] && grid[i][j]=='1') v[k][j]++;
-                    else f[j]=0;
-                }
+        vector<vector<int>> first(m,vector<int>(n,n));
+        for(int j=0;j<m;j++){
+            if(grid[n-1][j]=='0') first[j][n-1]=n-1;
+            for(int k=n-2;k>=0;k--){
+                if(grid[k][j]=='0') first[j][k]=k;
+                else first[j][k]=first[j][k+1];
             }
         }
         for(int k=0;k<n;k++){
-            res=max(res,rec(v[k]));
+            vector<int> v(m);
+            for(int j=0;j<m;j++){
+                v[j]=first[j][k]-k;
+            }
+            res=max(res,rec(v));
         }
         return res;
     }
