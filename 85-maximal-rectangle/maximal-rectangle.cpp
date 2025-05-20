@@ -20,20 +20,18 @@ class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& grid) {
         int res=0,n=grid.size(),m=grid[0].size();
-        vector<vector<int>> first(m,vector<int>(n,n));
+        vector<vector<int>> v(n,vector<int>(m));
         for(int j=0;j<m;j++){
-            if(grid[n-1][j]=='0') first[j][n-1]=n-1;
-            for(int k=n-2;k>=0;k--){
-                if(grid[k][j]=='0') first[j][k]=k;
-                else first[j][k]=first[j][k+1];
+            vector<int> first(2,n);
+            for(int k=n-1;k>=0;k--){
+                if(grid[k][j]=='0') first[0]=k;
+                else if(k+1<n) first[0]=first[1];
+                first[1]=first[0];
+                v[k][j]=first[0]-k;
             }
         }
         for(int k=0;k<n;k++){
-            vector<int> v(m);
-            for(int j=0;j<m;j++){
-                v[j]=first[j][k]-k;
-            }
-            res=max(res,rec(v));
+            res=max(res,rec(v[k]));
         }
         return res;
     }
