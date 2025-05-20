@@ -1,33 +1,27 @@
 class Solution {
-    int rec(vector<int>& v) {
-        int n=v.size(),res=0;
-        vector<int> prevmin(n,-1);
-        stack<int> st;
-        for(int i=0;i<n;i++){
-            while(st.size() && v[st.top()]>=v[i]) st.pop();
-            if(st.size()) prevmin[i]=st.top();
-            st.push(i);
-        }
-        st=stack<int>();
-        for(int i=n-1,nxtmin=n;i>=0;nxtmin=n,i--){
-            while(st.size() && v[st.top()]>=v[i]) st.pop();
-            if(st.size()) nxtmin=st.top();
-            st.push(i);
-            res=max(res,(nxtmin-prevmin[i]-1)*v[i]);
-        }
-        return res;
-    }
 public:
     int maximalRectangle(vector<vector<char>>& grid) {
-        int res=0,n=grid.size(),m=grid[0].size();
-        vector<int> nxt(m, n);
+        int res = 0, n = grid.size(), m = grid[0].size();
+        vector<int> nxt(m, n); 
+
         for (int k = n - 1; k >= 0; k--) {
             vector<int> v(m);
+            stack<int> st;
+            vector<int> prevmin(m, -1);
             for (int j = 0; j < m; j++) {
                 if (grid[k][j] == '0') nxt[j] = k;
                 v[j] = nxt[j] - k;
+                while (!st.empty() && v[st.top()] >= v[j]) st.pop();
+                if (!st.empty()) prevmin[j] = st.top();
+                st.push(j);
             }
-            res=max(res,rec(v));
+            st=stack<int>(); 
+            for (int i = m - 1, nxtmin = m; i >= 0; i--) {
+                while (!st.empty() && v[st.top()] >= v[i]) st.pop();
+                if (!st.empty()) nxtmin = st.top();
+                res = max(res, (nxtmin - prevmin[i] - 1) * v[i]);
+                st.push(i);
+            }
         }
 
         return res;
