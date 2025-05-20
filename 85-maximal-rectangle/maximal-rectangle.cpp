@@ -22,12 +22,10 @@ public:
         int res=0,n=grid.size(),m=grid[0].size();
         vector<vector<int>> v(n,vector<int>(m));
         for(int j=0;j<m;j++){
-            vector<int> first(2,n);
+            int nxt=n;
             for(int k=n-1;k>=0;k--){
-                if(grid[k][j]=='0') first[0]=k;
-                else if(k+1<n) first[0]=first[1];
-                first[1]=first[0];
-                v[k][j]=first[0]-k;
+                if(grid[k][j]=='0') nxt=k;
+                v[k][j]=nxt-k;
             }
         }
         for(int k=0;k<n;k++){
