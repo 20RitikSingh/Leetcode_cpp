@@ -1,14 +1,15 @@
 func removeDuplicates(nums []int) int {
-    j:=0
-    count:=make([]int,201)
-    for _,i:=range nums{
-        count[100+i]++
-    }
-    for i:=range 201{
-        if count[i]>0 {
-            nums[j]=i-100
+    c,i,j,n:=1,1,1,len(nums)
+    for i<n && j<n{
+        for j<n && nums[j]==nums[i-1]{
             j++
         }
+        if j==n {
+            break
+        }
+        nums[i]=nums[j]
+        c++
+        i++
     }
-    return j
+    return c
 }
