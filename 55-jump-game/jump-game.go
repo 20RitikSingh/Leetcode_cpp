@@ -3,7 +3,7 @@ func rec(nums []int,idx int) bool {
     if dp[idx]!=0 {
         return dp[idx]==2
     }
-    for i:=idx+1;i<idx+nums[idx]+1;i++{
+    for i:=idx+1;i<idx+nums[idx]+1 && i<len(nums);i++{
         if rec(nums,i) {
             dp[idx]=2
             return true
