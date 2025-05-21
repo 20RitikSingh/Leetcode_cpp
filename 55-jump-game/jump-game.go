@@ -16,6 +16,7 @@ func rec(nums []int,idx int) bool {
     return false
 }
 func canJump(nums []int) bool {
-    dp=make([]int,len(nums))
+    dp=make([]int,len(nums),len(nums))
+    // dp[len(nums)-1]=1
     return rec(nums,0)
 }
