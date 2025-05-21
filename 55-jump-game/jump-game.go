@@ -1,13 +1,13 @@
-
-func rec(nums []int,idx int,dp []int) bool {
+var dp []int
+func rec(nums []int,idx int) bool {
     if idx==len(nums)-1{
         return true
     }
     if dp[idx]!=0 {
-        return (dp[idx]-1)==2
+        return dp[idx]==2
     }
     for i:=idx+1;i<idx+nums[idx]+1;i++{
-        if rec(nums,i,dp) {
+        if rec(nums,i) {
             dp[idx]=2
             return true
         }
@@ -16,6 +16,6 @@ func rec(nums []int,idx int,dp []int) bool {
     return false
 }
 func canJump(nums []int) bool {
-    dp:=make([]int,1e4)
-    return rec(nums,0,dp)
+    dp=make([]int,len(nums))
+    return rec(nums,0)
 }
