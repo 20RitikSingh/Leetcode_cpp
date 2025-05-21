@@ -1,13 +1,15 @@
 func majorityElement(nums []int) int {
-    n:=len(nums)
-    slices.Sort(nums)
-    i,j:=0,n/2
-    for j<n{
-        if nums[i]==nums[j]{
-            return nums[i]
+    leader,count:=0,0
+    for i:=range nums{
+        if leader==nums[i]{
+            count++
+        }else{
+            count--
         }
-        i++
-        j++
+        if count<=0 {
+            leader=nums[i]
+            count=1
+        }
     }
-    return nums[0]
+    return leader
 }
