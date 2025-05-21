@@ -1,8 +1,5 @@
 var dp []int
 func rec(nums []int,idx int) bool {
-    if idx==len(nums)-1{
-        return true
-    }
     if dp[idx]!=0 {
         return dp[idx]==2
     }
@@ -17,6 +14,6 @@ func rec(nums []int,idx int) bool {
 }
 func canJump(nums []int) bool {
     dp=make([]int,len(nums),len(nums))
-    // dp[len(nums)-1]=1
+    dp[len(nums)-1]=2
     return rec(nums,0)
 }
