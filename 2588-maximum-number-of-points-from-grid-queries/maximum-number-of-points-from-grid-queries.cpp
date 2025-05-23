@@ -9,7 +9,8 @@ public:
         int dy[4]={1,-1,0,0};
         int k=0;
 
-        vector<int> v(1e6+2);
+        int mx_query=*max_element(queries.begin(),queries.end());
+        vector<int> v(mx_query+1);
 
         q.push({0-grid[0][0],0,0});
         vis[0][0]=1;
@@ -17,8 +18,8 @@ public:
         while(q.size()){
             auto [val,r,c]=q.top();
             q.pop();
-            // cout<<0-val-1<<" ";
             k=max(k,0-val+1);
+            if(k>mx_query) break;
             v[k]++;
 
             for(int i=0;i<4;i++){
@@ -29,10 +30,8 @@ public:
             }
         }
         
-        // cout<<endl;
-        for(int i=1;i<=1e6;i++){
+        for(int i=1;i<=mx_query;i++){
             v[i]+=v[i-1];
-            // cout<<v[i]<<" ";
         }
         
         for(int i=0;i<queries.size();i++){
