@@ -8,7 +8,7 @@ public:
         for(auto m:meetings){
             adj[m[0]].insert({m[2],m[1]});
             adj[m[1]].insert({m[2],m[0]});
-            set.insert({m[2],m[0],m[1]});
+            set.insert({m[2],min(m[0],m[1]),max(m[0],m[1])});
         }
 
         knows[0]=0;
@@ -22,7 +22,7 @@ public:
                 knows[x]=t;
                 auto it1=adj[x].lower_bound({t,-1});
                 while(it1!=adj[x].end()){
-                    set.insert({it1->first,x,it1->second});
+                    set.insert({it1->first,min(x,it1->second),max(x,it1->second)});
                     it1++;
                 }
             }
@@ -30,7 +30,7 @@ public:
                 knows[y]=t;
                 auto it1=adj[y].lower_bound({t,-1});
                 while(it1!=adj[y].end()){
-                    set.insert({it1->first,y,it1->second});
+                    set.insert({it1->first,min(y,it1->second),max(y,it1->second)});
                     it1++;
                 }
             }
