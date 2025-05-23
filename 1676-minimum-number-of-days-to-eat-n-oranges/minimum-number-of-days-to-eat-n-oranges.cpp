@@ -1,9 +1,9 @@
-unordered_map<int,int> dp;
+char dp[2000000000];
 class Solution {
 public:
     int minDays(int n) {
         if(n<2) return n;
-        if(dp.count(n)) return dp[n];
+        if(dp[n]) return dp[n];
         int res=1e9;
         if(n%3==0) res=min(res,1+minDays(n/3));
         else res=min(res,n%3+1+minDays(n/3));
