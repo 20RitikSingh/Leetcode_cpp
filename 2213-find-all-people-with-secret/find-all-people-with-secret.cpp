@@ -18,23 +18,16 @@ public:
             auto it=set.begin();
             auto [t,x,y]=*it;
             set.erase(it);
-            if(knows[y]<=t && knows[x]>t){
-                knows[x]=t;
-                auto it1=adj[x].lower_bound({t,-1});
-                while(it1!=adj[x].end()){
-                    if(set.count({it1->first,min(x,it1->second),max(x,it1->second)})==0)
-                    set.insert({it1->first,min(x,it1->second),max(x,it1->second)});
-                    it1++;
+            for(int i=0;i<2;i++){
+                if(knows[y]<=t && knows[x]>t){
+                    knows[x]=t;
+                    auto it=adj[x].lower_bound({t,-1});
+                    while(it!=adj[x].end()){
+                        set.insert({it->first,min(x,it->second),max(x,it->second)});
+                        it++;
+                    }
                 }
-            }
-            if(knows[x]<=t && knows[y]>t){
-                knows[y]=t;
-                auto it1=adj[y].lower_bound({t,-1});
-                while(it1!=adj[y].end()){
-                    if(set.count({it1->first,min(y,it1->second),max(y,it1->second)})==0)
-                    set.insert({it1->first,min(y,it1->second),max(y,it1->second)});
-                    it1++;
-                }
+                swap(x,y);
             }
         }
 
