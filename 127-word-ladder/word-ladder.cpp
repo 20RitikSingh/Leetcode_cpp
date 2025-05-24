@@ -8,9 +8,7 @@ class Solution {
     }
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        int n=wordList.size();
-        int start=n,end=-1;
-        int steps=1;
+        int n=wordList.size(),start=n,end=-1,steps=1;
         vector<vector<int>> adj(n+1);
         vector<bool> vis(n+1);
         queue<int> q;
@@ -24,6 +22,7 @@ public:
                 adj[j].push_back(i);
             }
         }
+
         if(end==-1) return 0;
         if(start==n)
         for(int j=0;j<n;j++){
@@ -32,8 +31,6 @@ public:
             adj[j].push_back(n);
         }
 
-        for(auto a:adj) {for(int i:a) cout<<i<<" "; cout<<endl;}
-
         q.push(start);
         vis[start]=1;
 
@@ -41,7 +38,6 @@ public:
             int sz=q.size();
             for(int i=0;i<sz;i++){
                 int cur=q.front();
-                cout<<cur<<" ";
                 q.pop();
                 
                 if(cur==end) return steps;
