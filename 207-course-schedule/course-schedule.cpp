@@ -1,5 +1,4 @@
 class Solution {
-    
 public:
     bool canFinish(int n, vector<vector<int>>& edges) {
         vector<vector<int>> adj(n);
@@ -11,8 +10,7 @@ public:
         }
         int p=0;
         for(int i=0;i<n;i++) if(!ind[i]) q.push(i),p++;
-        if(p==n) return 1;
-        while(q.size()){
+        while(p<n && q.size()){
             for(int i:adj[q.front()]){
                 ind[i]--;
                 if(ind[i]==0) q.push(i),p++;
