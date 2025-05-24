@@ -9,13 +9,13 @@ public:
             ind[e[0]]++;
             adj[e[1]].push_back(e[0]);
         }
-        for(int i=0;i<n;i++) if(!ind[i]) q.push(i);
         int p=0;
+        for(int i=0;i<n;i++) if(!ind[i]) q.push(i),p++;
+        if(p==n) return 1;
         while(q.size()){
-            p++;
             for(int i:adj[q.front()]){
                 ind[i]--;
-                if(ind[i]==0) q.push(i);
+                if(ind[i]==0) q.push(i),p++;
             }
             q.pop();
         }
