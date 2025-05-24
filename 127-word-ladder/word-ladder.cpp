@@ -3,6 +3,7 @@ class Solution {
         int c=0;
         for(int i=0;i<s.size();i++){
             if(s[i]!=t[i]) c++;
+            if(c>1) return 0;
         }
         return c;
     }
@@ -39,11 +40,10 @@ public:
             for(int i=0;i<sz;i++){
                 int cur=q.front();
                 q.pop();
-                
-                if(cur==end) return steps;
 
                 for(int j:adj[cur]){
                     if(vis[j]) continue;
+                    if(j==end) return steps+1;
                     q.push(j);
                     vis[j]=1;
                 }
