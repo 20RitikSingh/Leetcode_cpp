@@ -4,7 +4,8 @@ public:
         int n=nums.size();
         stack<int> st;
         vector<int> prev(n,-1),nxt(n,n);
-        vector<set<pair<int,int>>> v(1e5+1);
+        vector<int> last(1e5+1,n+1);
+        int res=0;
         for(int i=0;i<n;i++){
             while(st.size() && nums[st.top()]>=nums[i]) st.pop();
             if(st.size()) prev[i]=st.top();
@@ -15,11 +16,10 @@ public:
             while(st.size() && nums[st.top()]>=nums[j]) st.pop();
             if(st.size()) nxt[j]=st.top();
             st.push(j);
-            v[nums[j]].insert({prev[j],nxt[j]});
-        }
-        int res=0;
-        for(int i=1;i<=1e5;i++){
-            res+=v[i].size();
+            if(nums[j] && last[nums[j]]>=nxt[j]){
+                res++;
+                last[nums[j]]=prev[j];
+            }
         }
         return res;
     }
