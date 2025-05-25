@@ -4,13 +4,15 @@ public:
         int n=nums.size();
         stack<int> st;
         vector<int> prev(n,-1),nxt(n,n);
-        vector<int> last(1e5+1,n+1);
         int res=0;
         for(int i=0;i<n;i++){
             while(st.size() && nums[st.top()]>=nums[i]) st.pop();
             if(st.size()) prev[i]=st.top();
             st.push(i);
+            res=max(res,nums[i]);
         }
+        vector<int> last(res+1,n+1);
+        res=0;
         st=stack<int>();
         for(int j=n-1;j>=0;j--){
             while(st.size() && nums[st.top()]>=nums[j]) st.pop();
