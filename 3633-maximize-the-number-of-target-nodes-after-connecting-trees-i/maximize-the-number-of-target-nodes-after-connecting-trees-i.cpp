@@ -1,6 +1,5 @@
 class Solution {
     int bfs(vector<vector<int>> &adj,int cur,int k){
-        if(cur<0) return 0;
         queue<int> q;
         int c=0;
         vector<int> vis(adj.size());
@@ -9,8 +8,7 @@ class Solution {
         while(q.size() && k){
             int sz=q.size();
             while(sz--){
-                cur=q.front();
-                for(int i:adj[cur]) if(!vis[i]) q.push(i), vis[i]++;
+                for(int i:adj[q.front()]) if(!vis[i]) q.push(i), vis[i]++;
                 q.pop();
                 c++;
             }
@@ -33,7 +31,6 @@ public:
         for(int i=0;i<m;i++){
             span2=max(span2,bfs(adj,i,k));
         }
-        cout<<span2<<endl;
         adj=vector<vector<int>>(n);
         build(adj,edges1);
         vector<int> res(n);
