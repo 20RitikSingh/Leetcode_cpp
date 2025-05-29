@@ -1,4 +1,4 @@
-unordered_map<int,string> mp;
+string dp[31];
 class Solution {
     string rle(string s){
         string res;
@@ -20,7 +20,7 @@ class Solution {
 public:
     string countAndSay(int n) {
         if(n==1) return "1";
-        if(!mp.count(n)) mp[n]=rle(countAndSay(n-1));
-        return mp[n];
+        if(dp[n]=="") dp[n]=rle(countAndSay(n-1));
+        return dp[n];
     }
 };
