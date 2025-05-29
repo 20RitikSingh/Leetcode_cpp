@@ -1,15 +1,24 @@
 class Solution {
-    string RLE(string s){
-        string res="1"+string(1,s[0]);
-        for(int i=1;i<s.size();i++)
-            if(res.back()==s[i]) res[res.size()-2]++;
-            else res=res+"1"+string(1,s[i]);
+    string rle(string s){
+        string res;
+        int c=0;
+        char sel=s[0];
+        for(char ch:s){
+            if(ch==sel) c++;
+            else{ 
+                res.push_back(c+'0');
+                res.push_back(sel);
+                sel=ch;
+                c=1;
+            }
+        }
+        res.push_back(c+'0');
+        res.push_back(sel);
         return res;
     }
 public:
     string countAndSay(int n) {
-        string s="1";
-        for(int k=1;k<n;k++) s=RLE(s);
-        return s;
+        if(n==1) return "1";
+        return rle(countAndSay(n-1));
     }
 };
