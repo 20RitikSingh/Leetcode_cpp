@@ -1,3 +1,4 @@
+unordered_map<int,string> mp;
 class Solution {
     string rle(string s){
         string res;
@@ -19,6 +20,7 @@ class Solution {
 public:
     string countAndSay(int n) {
         if(n==1) return "1";
-        return rle(countAndSay(n-1));
+        if(!mp.count(n)) mp[n]=rle(countAndSay(n-1));
+        return mp[n];
     }
 };
