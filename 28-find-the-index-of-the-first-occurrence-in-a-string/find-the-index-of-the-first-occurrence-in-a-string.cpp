@@ -1,8 +1,8 @@
 class Solution {
     int dfs(string &s,string &p,int i,int j){
-        if(j==p.size()) return i;
+        if(j==p.size()) return i-p.size();
         if(i==s.size() || s[i]!=p[j]) return -1; 
-        return dfs(s,p,i+1,j+1)>0?i:-1;
+        return dfs(s,p,i+1,j+1);
     }
 public:
     int strStr(string s, string p) {
