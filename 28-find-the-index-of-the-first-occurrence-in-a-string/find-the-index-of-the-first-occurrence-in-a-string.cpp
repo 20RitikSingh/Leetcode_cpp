@@ -1,32 +1,21 @@
 class Solution {
 public:
     int strStr(string s, string p) {
-        if(s.size()<p.size()) return -1;
-        vector<int> pi(p.size());
+        if(p=="") return 0;
+        s=p+"#"+s;
+        int n=s.size();
+        vector<int> v(n);
         int prev=0,cur=1;
-        while(cur<p.size()){
-            if(p[prev]==p[cur]){
+        while(cur<n){
+            if(s[cur]==s[prev]){
                 prev++;
-                pi[cur]=prev;
+                v[cur]=prev;
+                if(v[cur]==p.size()) return cur-2*p.size();
                 cur++;
                 continue;
             }
-            if(prev) prev=pi[prev-1];
+            if(prev) prev=v[prev-1];
             else cur++;
-        }
-        // for(int i:pi) cout<<i<<" ";
-        cur=0;
-        int i=0;
-        while(i<=s.size()){
-            // cout<<i<<" "<<cur<<endl;
-            if(cur==p.size()) return i-p.size();
-            if(s[i]==p[cur]){
-                cur++;
-                i++;
-                continue;
-            }
-            if(cur) cur=pi[cur-1];
-            else i++;
         }
         return -1;
     }
