@@ -1,20 +1,22 @@
 class Solution {
-    int d='z'+1,mod=1e9+7;
-    int pow(int x,int y){
-        if(!y) return 1;
-        int res=pow(x,y/2);
-        res=(1LL*res*res)%mod;
-        if(y%2) return (1LL*res*x)%mod;
-        return res;
-    }
-    int longestPrefixPalindrome(string &s){
-        int h1=0,h2=0,n=s.size(),res=0;
-        for(int i=0;i<n;i++){
-            h1=(1LL*h1*d+s[i])%mod;
-            h2=(h2+1LL*pow(d,i)*s[i])%mod;
-            if(h1==h2) res=i+1;
+    int longestPrefixPalindrome(string s){
+        string t=s;
+        reverse(t.begin(),t.end());
+        s=s+"#"+t;
+        int n=s.size();
+        vector<int> v(n);
+        int prev=0,cur=1;
+        while(cur<n){
+            if(s[cur]==s[prev]){
+                prev++;
+                v[cur]=prev;
+                cur++;
+                continue;
+            }
+            if(prev) prev=v[prev-1];
+            else cur++;
         }
-        return res;
+        return v.back();
     }
 public:
     string shortestPalindrome(string s) {
