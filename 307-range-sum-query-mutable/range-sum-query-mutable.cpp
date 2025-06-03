@@ -1,42 +1,37 @@
 class NumArray {
-    int seg[100001];
+    int tree[100000];
     int n;
-    void build(vector<int> &nums,int l,int r,int idx){
-        if(l==r){
-            seg[idx]=nums[l];
-            return;
-        }
-        int mid=l+(r-l)/2;
-        build(nums,l,mid,2*idx+1);
-        build(nums,mid+1,r,2*idx+2);
-        seg[idx]=seg[2*idx+1]+seg[2*idx+2];
+    int build(vector<int> &nums,int low,int high,int idx){
+        int mid=low+(high-low)/2;
+        if(high-low==1) tree[idx]=nums[low];
+        else tree[idx]=build(nums,low,mid,2*idx+1)+build(nums,mid,high,2*idx+2);
+        return tree[idx];
     }
-    int query(int idx,int l,int r,int ql,int qr){
-        if(ql>r || qr<l) return 0; 
-        if(l==ql && r==qr) return seg[idx];
-        int mid=l+(r-l)/2;
-        return query(2*idx+1,l,mid,ql,min(mid,qr))+query(2*idx+2,mid+1,r,max(ql,mid+1),qr);
+    int query(int low,int high,int b,int e,int idx){
+        int mid=b+(e-b)/2;
+        if (high <= b || low >= e) return 0;
+        if(b>=low && e<=high) return tree[idx];
+        return query(low,high,b,mid,2*idx+1)+query(low,high,mid,e,2*idx+2);
     }
-    int run(int idx,int l,int r,int pos,int val){
-        int mid=l+(r-l)/2;
-        if(l==r){
-            if(l==pos) seg[idx]=val;
-        }else if(pos<=mid) seg[idx]=run(2*idx+1,l,mid,pos,val)+seg[2*idx+2];
-        else seg[idx]=seg[2*idx+1]+run(2*idx+2,mid+1,r,pos,val);
-        return seg[idx];
+    int update(int low,int high,int idx,int i,int val){
+        int mid=low+(high-low)/2;
+        if(high-low==1) tree[idx]=val;
+        else if(i>=mid) tree[idx]=tree[2*idx+1]+update(mid,high,2*idx+2,i,val);
+        else tree[idx]=tree[2*idx+2]+update(low,mid,2*idx+1,i,val);
+        return tree[idx];
     }
 public:
     NumArray(vector<int>& nums) {
         n=nums.size();
-        build(nums,0,n-1,0);
+        build(nums,0,n,0);
     }
     
     void update(int index, int val) {
-        run(0,0,n-1,index,val);
+        update(0,n,0,index,val);
     }
     
     int sumRange(int left, int right) {
-        return query(0,0,n-1,left,right);
+        return query(left,right+1,0,n,0);
     }
 };
 
