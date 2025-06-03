@@ -1,16 +1,14 @@
 struct NumberContainers {
-    set<pair<int,int>> set;
+    unordered_map<int,set<int>> set;
     unordered_map<int,int> mp;
     void change(int index, int number) {
-        set.erase({mp[index],index});
+        set[mp[index]].erase(index);
         mp[index]=number;
-        set.insert({mp[index],index});
+        set[mp[index]].insert(index);
     }
-    
     int find(int number) {
-        auto it=set.lower_bound({number,-1});
-        if(it==set.end() || it->first!=number) return -1;
-        return it->second;
+        if(set[number].empty()) return -1;
+        return *set[number].begin();
     }
 };
 
