@@ -9,7 +9,7 @@
  */
 class Codec {
     TreeNode* dec(string &s,int &idx) {
-        if(s[idx]=='b'){ 
+        if(s[idx]==-127){ 
             idx++;
             return NULL;
         }
@@ -17,20 +17,20 @@ class Codec {
         val<<=7;
         val|=s[idx++];
         TreeNode* t=new TreeNode(val);
-        if(s[idx++]=='l') t->left=dec(s,idx);
-        if(s[idx++]=='r') t->right=dec(s,idx);
+        if(s[idx++]==-126) t->left=dec(s,idx);
+        if(s[idx++]==-125) t->right=dec(s,idx);
         return t;
     }
     void cod(TreeNode* root,string &s) {
         if(!root){ 
-            s.push_back('b');
+            s.push_back(-127);
             return;
         }
         s.push_back((root->val)>>7);
         s.push_back(((1<<7)-1)&root->val);
-        if(root->left) s.push_back('l');
+        if(root->left) s.push_back(-126);
         cod(root->left,s);
-        if(root->right) s.push_back('r');
+        if(root->right) s.push_back(-125);
         cod(root->right,s);
     }
 public:
