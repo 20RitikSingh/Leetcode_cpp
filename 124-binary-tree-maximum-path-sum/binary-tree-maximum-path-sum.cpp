@@ -14,8 +14,6 @@ class Solution {
     int rec(TreeNode* root){
         if(!root) return 0;
         int l=max(0,rec(root->left)),r=max(0,rec(root->right));
-        res=max(res,root->val+l);
-        res=max(res,root->val+r);
         res=max(res,root->val+l+r);
         return max(l+root->val,r+root->val);
     }
