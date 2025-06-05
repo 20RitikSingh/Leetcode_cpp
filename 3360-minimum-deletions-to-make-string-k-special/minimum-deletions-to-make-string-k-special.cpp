@@ -7,12 +7,7 @@ public:
         int res=1e9,p=0;
         for(int i=0;i<26;i++){
             int c=p;
-            // cout<<c<<endl;
-            auto it=lower_bound(freq.begin(),freq.end(),freq[i]+k+1);
-            while(it!=freq.end()){
-                c+=*it-freq[i]-k;
-                it++;
-            }
+            for(int j=i+1;j<26;j++) c+=max(0,freq[j]-freq[i]-k);
             res=min(c,res);
             p+=freq[i];
         }
