@@ -8,22 +8,16 @@
  * };
  */
 class Codec {
-    TreeNode* dec(string s,int &idx) {
-        // cout<<idx<<endl;
+    TreeNode* dec(string &s,int &idx) {
         if(s[idx]=='b'){ 
             idx++;
             return NULL;
         }
-        // if(idx>=s.size()) cout<<"err"<<endl;
         int val=s[idx++];
         val<<=7;
-        // if(idx>=s.size()) cout<<"err"<<endl;
         val|=s[idx++];
-        // cout<<"val:"<<val<<endl;
         TreeNode* t=new TreeNode(val);
-        // if(idx>=s.size()) cout<<"err"<<endl;
         if(s[idx++]=='l') t->left=dec(s,idx);
-        // if(idx>=s.size()) cout<<"err"<<endl;
         if(s[idx++]=='r') t->right=dec(s,idx);
         return t;
     }
@@ -44,7 +38,6 @@ public:
     // Decodes your encoded data to tree.
     TreeNode* deserialize(string data) {
         int i=0;
-        // cout<<data<<endl;
         return dec(data,i);
     }
 };
