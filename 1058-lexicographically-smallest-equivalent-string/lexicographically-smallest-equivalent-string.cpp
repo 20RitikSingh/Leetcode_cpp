@@ -1,21 +1,28 @@
-class Solution {
-    void dfs(vector<set<int>> &adj,int cur,vector<int> &parent,int start){
-        if(parent[cur]!=-1) return;
-        parent[cur]=start;
-        for(int i:adj[cur]) dfs(adj,i,parent,start);
+class DSU{
+    vector<int> parent;
+public:
+    DSU(int n){
+        parent.resize(n);
+        for(int i=0;i<n;i++) parent[i]=i;
     }
+    void add(int x,int y){
+        x=anc(x),y=anc(y);
+        if(x==y) return;
+        if(x>y)  swap(y,x);
+        parent[y]=x;
+    }
+    int anc(int x){
+        if(parent[x]==x) return x;
+        parent[x]=anc(parent[x]);
+        return parent[x]; 
+    }
+};
+class Solution {
 public:
     string smallestEquivalentString(string s1, string s2, string baseStr) {
-        vector<set<int>> adj(26);
-        for(int i=0;i<s1.size();i++){
-            adj[s1[i]-'a'].insert(s2[i]-'a');
-            adj[s2[i]-'a'].insert(s1[i]-'a');
-        }
-        vector<int> parent(26,-1);
-        for(int i=0;i<26;i++){
-            if(parent[i]==-1) dfs(adj,i,parent,i);
-        }
-        for(auto &ch:baseStr) ch=parent[ch-'a']+'a';
+        DSU dsu('z'+1);
+        for(int i=0;i<s1.size();i++) dsu.add(s1[i],s2[i]);
+        for(auto &ch:baseStr) ch=dsu.anc(ch);
         return baseStr;
     }
 };
