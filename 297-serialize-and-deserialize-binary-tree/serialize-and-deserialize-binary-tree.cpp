@@ -21,17 +21,23 @@ class Codec {
         if(s[idx++]=='r') t->right=dec(s,idx);
         return t;
     }
+    void cod(TreeNode* root,string &s) {
+        if(!root){ 
+            s.push_back('b');
+            return;
+        }
+        s.push_back((root->val)>>7);
+        s.push_back(((1<<7)-1)&root->val);
+        if(root->left) s.push_back('l');
+        cod(root->left,s);
+        if(root->right) s.push_back('r');
+        cod(root->right,s);
+    }
 public:
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        if(!root) return "b";
-        string l=serialize(root->left);
-        string r=serialize(root->right);
-        string res(2,0);
-        res[1]=((1<<7)-1)&root->val;
-        res[0]=(root->val)>>7;
-        if(l!="") res+="l"+l;
-        if(r!="") res+="r"+r;
+        string res;
+        cod(root,res);
         return res;
     }
 
