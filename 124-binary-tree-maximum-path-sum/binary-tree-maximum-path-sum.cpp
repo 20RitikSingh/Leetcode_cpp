@@ -11,16 +11,13 @@
  */
 class Solution {
     int res=-1e9;
-    int rec(TreeNode* root,int sum=0){
+    int rec(TreeNode* root){
         if(!root) return 0;
-        int l=rec(root->left,sum+root->val),r=rec(root->right,sum+root->val);
-        res=max(res,root->val);
-        res=max(res,l+sum+root->val);
-        res=max(res,l+r+root->val);
-        res=max(res,r+sum+root->val);
-        res=max(res,max(root->val,max(l+root->val,r+root->val)));
-        // cout<<root->val<<" "<<max(root->val,max(l+root->val,r+root->val))<<endl;;
-        return max(root->val,max(l+root->val,r+root->val));
+        int l=max(0,rec(root->left)),r=max(0,rec(root->right));
+        res=max(res,root->val+l);
+        res=max(res,root->val+r);
+        res=max(res,root->val+l+r);
+        return max(l+root->val,r+root->val);
     }
 public:
     int maxPathSum(TreeNode* root,int sum=0) {
