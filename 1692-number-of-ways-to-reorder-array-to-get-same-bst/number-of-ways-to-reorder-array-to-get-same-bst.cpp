@@ -1,19 +1,12 @@
-int mod=1e9+7;
-vector<vector<long long>> table;
-struct init{
-    init(){
-        int n=1000;
-        table.resize(n + 1);
-        for(int i = 0; i < n + 1; ++i){
-            table[i] = vector<long long>(i + 1, 1);
-            for(int j = 1; j < i; ++j){
-                table[i][j] = (table[i-1][j-1] + table[i-1][j]) % mod;
-            }
-        }
-    }
-};
-init init;
+
 class Solution {
+int mod=1e9+7;
+unordered_map<int, unordered_map<int, int>> dp;
+int table(int n, int k) {
+    if (k == 0 || k == n) return 1;
+    if (dp[n][k]) return dp[n][k];
+    return dp[n][k] = (table(n - 1, k - 1) + table(n - 1, k)) % mod;
+}
 public:
     int numOfWays(vector<int>& nums) {
         int n=nums.size();
@@ -30,7 +23,7 @@ public:
             }
             if(x.size()) q.push(x);
             if(y.size()) q.push(y);
-            res=(1LL*res*table[x.size()+y.size()][x.size()])%mod;
+            res=(1LL*res*table(x.size()+y.size(),x.size()))%mod;
         }
         return res-1;
     }
