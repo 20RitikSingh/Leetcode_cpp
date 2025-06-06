@@ -1,21 +1,17 @@
 class Solution {
 public:
     string robotWithString(string s) {
-        int n=s.size();
+        int n=s.size(),i=0,j=0;
         stack<char> st;
-        vector<char> nxt(n,s[n-1]);
-        for(int i=n-2;i>=0;i--){
-            nxt[i]=min(s[i],nxt[i+1]);
-        }
-        string res=s;
-        int i=0,j=0;
+        string nxt=s;
+        for(int i=n-2;i>=0;i--) nxt[i]=min(s[i],nxt[i+1]);
         while(i<n){
-            if(st.size() && i<n && st.top()<=nxt[i]){
-                res[j++]=st.top();
+            if(st.size() && st.top()<=nxt[i]){
+                nxt[j++]=st.top();
                 st.pop();
             }else st.push(s[i++]);
         }
-        while(st.size()){ res[j++]=st.top(); st.pop();}
-        return res;
+        while(st.size()){ nxt[j++]=st.top(); st.pop();}
+        return nxt;
     }
 };
