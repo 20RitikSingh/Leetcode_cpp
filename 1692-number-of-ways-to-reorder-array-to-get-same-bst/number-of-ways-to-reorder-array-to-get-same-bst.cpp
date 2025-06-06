@@ -1,30 +1,17 @@
-int mod=1e9+7;
-int pow(int x,int y){
-    if(!y) return 1;
-    int ans=pow(x,y/2);
-    ans=(1LL*ans*ans)%mod;
-    if(y%2) ans=(1LL*ans*x)%mod;
-    return ans;
-}
-int inv(int x){ return pow(x,mod-2);}
-int fact[1001],invfact[1001];
-int calc(int x,int y){
-    if(!x || !y) return 1;
-    return (1LL*fact[x+y]*(1LL*invfact[x]*invfact[y]%mod))%mod;
-}
-struct init{
-    init(){
-        fact[0]=1,invfact[0]=1;
-        for(int i=1;i<1001;i++){ 
-            fact[i]=(1LL*fact[i-1]*i)%mod;
-            invfact[i]=(1LL*invfact[i-1]*inv(i))%mod;
-        }
-    }
-};
-init init;
 class Solution {
+int mod=1e9+7;
+vector<vector<long long>> table;
 public:
     int numOfWays(vector<int>& nums) {
+        int n=nums.size();
+        table.resize(n + 1);
+        for(int i = 0; i < n + 1; ++i){
+            table[i] = vector<long long>(i + 1, 1);
+            for(int j = 1; j < i; ++j){
+                table[i][j] = (table[i-1][j-1] + table[i-1][j]) % mod;
+            }
+        }
+
         queue<vector<int>> q;
         q.push(nums);
         int res=1;
@@ -38,7 +25,7 @@ public:
             }
             if(x.size()) q.push(x);
             if(y.size()) q.push(y);
-            res=(1LL*res*calc(x.size(),y.size()))%mod;
+            res=(res*table[x.size()+y.size()][x.size()])%mod;
         }
         return res-1;
     }
