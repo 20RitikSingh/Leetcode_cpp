@@ -19,12 +19,11 @@ class Solution {
     }
     void dfs(TreeNode* root){
         if(!root) return;
-        cout<<root->val<<endl;
         if(!root->left && !root->right && kp.count(root->val)){
             root->left=kp[root->val]->left;
             root->right=kp[root->val]->right;
-            kp.erase(root->val);
         }
+        kp.erase(root->val);
         dfs(root->left);
         dfs(root->right);
     }
@@ -42,7 +41,6 @@ public:
         }
         if(mp.size()!=1) return NULL; 
         for(auto [k,root]:mp){
-            kp.erase(root->val);
             dfs(root);
             if(checkBST(root,-1e9,1e9) && kp.empty()) return root;
         }
