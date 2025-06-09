@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.left=.left#         self.right=.right
 class Solution:
-    @cache
+    @lru_cache
     def rob(self, root: Optional[TreeNode]) -> int:
         if root == None:
             return 0
