@@ -1,10 +1,5 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0,.leftNone,.rightNone):
-#         self.val = val
-#         self.left=.left#         self.right=.right
 class Solution:
-    @lru_cache
+    @cache
     def rob(self, root: Optional[TreeNode]) -> int:
         if root == None:
             return 0
