@@ -15,9 +15,10 @@ public:
     int rob(TreeNode* root) {
         if(!root) return 0;
         if(dp.count(root)) return dp[root];
-        int x=root->val;
-        if(root->left) x+=rob(root->left->right)+rob(root->left->left);
-        if(root->right) x+=rob(root->right->right)+rob(root->right->left);
-        return dp[root]=max(rob(root->left)+rob(root->right),x);
+        return dp[root]=max(
+            rob(root->left)+rob(root->right),
+            root->val
+            +(root->left?rob(root->left->right)+rob(root->left->left):0)
+            +(root->right?rob(root->right->right)+rob(root->right->left):0));
     }
 };
