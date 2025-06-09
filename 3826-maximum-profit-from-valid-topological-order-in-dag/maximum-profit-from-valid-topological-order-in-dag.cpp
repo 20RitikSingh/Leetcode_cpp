@@ -1,5 +1,5 @@
+int dp[1<<22],req[22];
 class Solution {
-    int dp[1<<22],req[22];
     int rec(int msk,vector<int> &s){
         if(dp[msk]!=-1) return dp[msk];
         int res=0,idx=__builtin_popcount(msk) + 1;
@@ -14,6 +14,7 @@ class Solution {
 public:
     int maxProfit(int n, vector<vector<int>>& edges, vector<int>& s) {
         memset(dp,-1,sizeof(dp));
+        memset(req,0,sizeof(req));
         for(auto e:edges) req[e[1]]|=1<<e[0];
         return rec(0,s);
         return 0;
