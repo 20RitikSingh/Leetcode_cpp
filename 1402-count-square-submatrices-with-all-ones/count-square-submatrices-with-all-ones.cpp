@@ -15,11 +15,13 @@ public:
         int ans=0;
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                for(int k=1;k<=min(m,n);k++){
-                    int x=check(i,j,k);
-                    if(!x) break;
-                    ans+=x;
+                int low=0,high=min(n,m);
+                while(low<high){
+                    int mid=low+(high-low+1)/2;
+                    if(check(i,j,mid)) low=mid;
+                    else high=mid-1;
                 }
+                ans+=low;
             }
         }
         return ans;
