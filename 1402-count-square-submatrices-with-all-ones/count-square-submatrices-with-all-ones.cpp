@@ -1,29 +1,27 @@
 class Solution {
-    int rec(vector<vector<int>>& matrix,vector<vector<bool>> &vis,int r,int c){
-        int res=0,m=matrix.size(),n=matrix[0].size();
-        int sz=0;
-        while(sz<min(m-r,n-c)){
-            for(int i=r;i<=r+sz;i++){
-                if(!matrix[i][c+sz]) return sz;
-            }
-            for(int j=c;j<=c+sz;j++){
-                if(!matrix[r+sz][j]) return sz;
-            }
-            sz++;
-        }
-        return sz;
-
-    }
 public:
     int countSquares(vector<vector<int>>& matrix) {
-        int res=0,m=matrix.size(),n=matrix[0].size();
-        vector<vector<bool>> vis(m,vector<bool>(n));
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                res+=rec(matrix,vis,i,j);
-                // cout<<rec(matrix,vis,i,j)<<endl;
+        int m=matrix.size(),n=matrix[0].size();
+        vector<vector<int>> dp(m+1,vector<int>(n+1));
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                dp[i][j]=dp[i-1][j]+dp[i][j-1]+matrix[i-1][j-1]-dp[i-1][j-1];
             }
         }
-        return res;
+        auto check=[&](int a,int b,int c)->bool{
+            if(a+c>m || b+c>n) return 0;
+            return c*c==dp[a][b]+dp[a+c][b+c]-dp[a+c][b]-dp[a][b+c];
+        };
+        int ans=0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                for(int k=1;k<=min(m,n);k++){
+                    int x=check(i,j,k);
+                    if(!x) break;
+                    ans+=x;
+                }
+            }
+        }
+        return ans;
     }
 };
