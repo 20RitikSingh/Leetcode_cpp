@@ -8,7 +8,7 @@ class Solution {
         }
         return sum;
     }
-    int dp[17][1<<16];
+    char dp[17][1<<16];
     bool rec(vector<vector<int>> &v,int idx,int msk){
         if(idx==v.size()) return 1;
         // cout<<idx<<" "<<bitset<10>(msk)<<endl;
