@@ -11,7 +11,6 @@ class Solution {
     char dp[17][1<<16];
     bool rec(vector<vector<int>> &v,int idx,int msk){
         if(idx==v.size()) return 1;
-        // cout<<idx<<" "<<bitset<10>(msk)<<endl;
         if(dp[idx][msk]!=-1) return dp[idx][msk];
         for(int i:v[idx]){
             if((msk&i)==msk && rec(v,idx+1,msk|i)){
@@ -25,8 +24,7 @@ class Solution {
 public:
     bool canPartitionKSubsets(vector<int>& nums, int k) {
         memset(dp,-1,sizeof(dp));
-        int sum=0,n=nums.size();
-        for(int i:nums) sum+=i;
+        int n=nums.size(),sum=accumulate(nums.begin(),nums.end(),0);
         if(sum%k) return 0;
         sum/=k;
         vector<vector<int>> v(k+1);
@@ -35,15 +33,8 @@ public:
             int x=get(nums,i);
             if(x%sum) continue;
             v[x/sum].push_back(i);
-            // cout<<bitset<10>(i)<<" "<<x/sum<<endl;
         }
 
-        // for(int i=0;i<=k;i++){
-        //     cout<<i<<" ";
-        //     for(int j:v[i]) cout<<bitset<10>(j)<<" ";
-        //     cout<<endl;
-        // }
-        
         return rec(v,1,0);
         
     }
