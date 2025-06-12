@@ -1,41 +1,50 @@
 class Solution {
-    int subsetSum(vector<int> &nums,int msk){
-        int n=nums.size(),sum=0;
+    int get(vector<int> &nums,int msk){
+        int sum=0,n=nums.size();
         for(int i=0;i<n;i++){
-            if(msk&(1<<i)){ 
+            if(msk&(1<<i)){
                 sum+=nums[i];
             }
         }
         return sum;
     }
-    int dp[17][66000];
-    bool rec(vector<vector<int>> &adj,int curr,int prev,int k){
-        if(curr>k) return 1;
-        if(dp[curr][prev]>=0) return dp[curr][prev];
-        dp[curr][prev]=0;
-        for(int i:adj[curr]){
-            if((i&prev)!=prev || i<prev) continue;
-            if(rec(adj,curr+1,i,k)){dp[curr][prev]=1; return 1;}
+    int dp[17][1<<16];
+    bool rec(vector<vector<int>> &v,int idx,int msk){
+        if(idx==v.size()) return 1;
+        // cout<<idx<<" "<<bitset<10>(msk)<<endl;
+        if(dp[idx][msk]!=-1) return dp[idx][msk];
+        for(int i:v[idx]){
+            if((msk&i)==msk && rec(v,idx+1,msk|i)){
+                dp[idx][msk]=1;
+                return 1;
+            }
         }
+        dp[idx][msk]=0;
         return 0;
     }
 public:
     bool canPartitionKSubsets(vector<int>& nums, int k) {
-        int n=nums.size();
-        vector<vector<int>> adj(k+1);
         memset(dp,-1,sizeof(dp));
+        int sum=0,n=nums.size();
+        for(int i:nums) sum+=i;
+        if(sum%k) return 0;
+        sum/=k;
+        vector<vector<int>> v(k+1);
 
-        int target=0;
-        for(int i:nums) target+=i;
-        if(target%k) return 0;
-        target/=k;
-
-        for(int i=0;i<1<<n;i++){
-            int x=subsetSum(nums,i);
-            if(x%target) continue;
-            adj[x/target].push_back(i);
+        for(int i=1;i<(1<<n);i++){
+            int x=get(nums,i);
+            if(x%sum) continue;
+            v[x/sum].push_back(i);
+            // cout<<bitset<10>(i)<<" "<<x/sum<<endl;
         }
+
+        // for(int i=0;i<=k;i++){
+        //     cout<<i<<" ";
+        //     for(int j:v[i]) cout<<bitset<10>(j)<<" ";
+        //     cout<<endl;
+        // }
         
-        return rec(adj,1,0,k);
+        return rec(v,1,0);
+        
     }
 };
