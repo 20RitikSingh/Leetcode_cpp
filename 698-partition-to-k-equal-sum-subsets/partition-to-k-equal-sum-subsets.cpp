@@ -1,13 +1,4 @@
 class Solution {
-    int get(vector<int> &nums,int msk){
-        int sum=0,n=nums.size();
-        for(int i=0;i<n;i++){
-            if(msk&(1<<i)){
-                sum+=nums[i];
-            }
-        }
-        return sum;
-    }
     char dp[17][1<<16];
     bool rec(int idx,int msk){
         if(idx==v.size()) return 1;
@@ -29,7 +20,8 @@ public:
         v.resize(k+1);
         
         for(int i=1;i<(1<<n);i++){
-            int x=get(nums,i);
+            int x=0;
+            for(int j=0;j<n;j++) if(i&(1<<j)) x+=nums[j];
             if(x%sum) continue;
             v[x/sum].push_back(i);
         }
