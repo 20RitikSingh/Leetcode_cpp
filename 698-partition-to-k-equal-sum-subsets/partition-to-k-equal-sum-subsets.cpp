@@ -9,11 +9,11 @@ class Solution {
         return sum;
     }
     char dp[17][1<<16];
-    bool rec(vector<vector<int>> &v,int idx,int msk){
+    bool rec(int idx,int msk){
         if(idx==v.size()) return 1;
         if(dp[idx][msk]!=-1) return dp[idx][msk];
         for(int i:v[idx]){
-            if((msk&i)==msk && rec(v,idx+1,msk|i)){
+            if((msk&i)==msk && rec(idx+1,msk|i)){
                 dp[idx][msk]=1;
                 return 1;
             }
@@ -21,21 +21,21 @@ class Solution {
         dp[idx][msk]=0;
         return 0;
     }
+    vector<vector<int>> v;
 public:
     bool canPartitionKSubsets(vector<int>& nums, int k) {
-        memset(dp,-1,sizeof(dp));
         int n=nums.size(),sum=accumulate(nums.begin(),nums.end(),0);
-        if(sum%k) return 0;
-        sum/=k;
-        vector<vector<int>> v(k+1);
-
+        if(sum%k) return 0;sum/=k;
+        v.resize(k+1);
+        
         for(int i=1;i<(1<<n);i++){
             int x=get(nums,i);
             if(x%sum) continue;
             v[x/sum].push_back(i);
         }
 
-        return rec(v,1,0);
+        memset(dp,-1,sizeof(dp));
+        return rec(1,0);
         
     }
 };
