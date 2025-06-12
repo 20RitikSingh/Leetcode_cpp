@@ -7,13 +7,13 @@ public:
     int shortestPathLength(vector<vector<int>>& adj) {
         n=adj.size();
         set<tuple<int,int,int>> set;
-        for(int i=0;i<n;i++) set.insert({0,i,comp(1<<i)});
+        for(int i=0;i<n;i++) set.insert({0,comp(1<<i),i});
         while(set.size()){
-            auto [cst,cur,msk]=*set.begin();
+            auto [cst,msk,cur]=*set.begin();
             set.erase(*set.begin());
             if(msk==0) return cst;
             for(int i:adj[cur]){
-                set.insert({cst+1,i,comp(comp(msk)|(1<<i))});
+                set.insert({cst+1,comp(comp(msk)|(1<<i)),i});
             }
         }
         return 0;
