@@ -25,7 +25,7 @@ class Solution {
     }
 public:
     int minSessions(vector<int>& tasks, int sessionTime) {
-        sort(tasks.begin(),tasks.end());
+        sort(tasks.begin(),tasks.end(),greater<int>());
         return rec(tasks,sessionTime,0);
     }
 };
