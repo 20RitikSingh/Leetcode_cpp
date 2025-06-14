@@ -15,9 +15,9 @@ class Solution {
         if(msk+1==1<<n) return 0;
         if(k<=0) return 1e9;
         if(dp[k][msk]!=-1) return dp[k][msk];
-        for(int i=0;i<(1<<n);i++){
-            if(msk&i) continue;
-            res=min(res,max(sum(nums,i),rec(nums,k-1,msk|i)));
+        int subset = ((1 << n) - 1) ^ msk;
+        for (int sub = subset; sub; sub = (sub - 1) & subset) {
+            res=min(res,max(sum(nums,sub),rec(nums,k-1,sub|msk)));
         }
         dp[k][msk]=res;
         return res;
