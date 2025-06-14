@@ -9,18 +9,18 @@ class Solution {
         dp2[msk]=1+(sum<=k);
         return sum<=k;
     }
-    int dp[16][1<<14];
+    int dp[1<<14];
     int rec(vector<int> &nums,int k,int msk){
         int n=nums.size(),res=1e9;
         if(msk+1==1<<n) return 0;
-        if(dp[k][msk]) return dp[k][msk];
+        if(dp[msk]) return dp[msk];
         int subset = ((1 << n) - 1) ^ msk;
         for (int sub = subset; sub; sub = (sub - 1) & subset) {
             if (check(nums, k, sub)) {
                 res = min(res, rec(nums, k, msk | sub) + 1);
             }
         }
-        dp[k][msk]=res;
+        dp[msk]=res;
         return res;
     }
 public:
