@@ -6,7 +6,7 @@ class Solution {
 public:
     int minimizeMax(vector<int>& nums, int p) {
         sort(nums.begin(),nums.end());
-        int low=0,high=nums.back();
+        int low=0,high=nums.back()-nums[0];
         while(low<high){
             int mid=low+(high-low)/2;
             if(check(nums,p,mid)) high=mid;
