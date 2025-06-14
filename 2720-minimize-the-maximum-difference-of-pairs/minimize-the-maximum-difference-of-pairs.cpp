@@ -1,8 +1,6 @@
 class Solution {
     int check(vector<int> &nums,int p,int d){
-        for(int i=1;i<nums.size();i++){
-            if(nums[i]-nums[i-1]<=d) p--,i++;
-        }
+        for(int i=1;i<nums.size() && p>0;i++) if(nums[i]-nums[i-1]<=d) p--,i++;
         return p<=0;
     }
 public:
