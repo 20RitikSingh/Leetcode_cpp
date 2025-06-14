@@ -14,9 +14,10 @@ class Solution {
         int n=nums.size(),res=1e9;
         if(msk+1==1<<n) return 0;
         if(dp[k][msk]) return dp[k][msk];
-        for(int i=1;i<(1<<n);i++){
-            if((msk&i)==0 && check(nums,k,i)){
-                res=min(res,rec(nums,k,msk|i)+1);
+        int subset = ((1 << n) - 1) ^ msk;
+        for (int sub = subset; sub; sub = (sub - 1) & subset) {
+            if (check(nums, k, sub)) {
+                res = min(res, rec(nums, k, msk | sub) + 1);
             }
         }
         dp[k][msk]=res;
