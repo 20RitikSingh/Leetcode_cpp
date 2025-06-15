@@ -1,36 +1,59 @@
 class Solution {
 public:
-    int minMoves(vector<string>& room, int energy) {
-        queue<tuple<int,int,int,int,int>> queue;
-        unordered_map<int,int> mp;
-        int n=room.size(),m=room[0].size(),p=0,r=0,k=0;
-        long long tmp=0;
-        for(int i=0;i<n;i++) 
-            for(int j=0;j<m;j++){
-                if(room[i][j]=='S') p=i,r=j;
-                if(room[i][j]=='L'){ 
-                    mp[(i*m+j)]=k++;
-                    tmp|=1<<mp[i*m+j];
+    int minMoves(vector<string>& grid, int energyMax) {
+        int m = grid.size(), n = grid[0].size();
+        int litterCount = 0;
+        map<pair<int,int>, int> litterIndex;
+        queue<tuple<int,int,int,int,int>> q; // x, y, energy, mask, steps
+        vector<vector<vector<vector<bool>>>> visited(
+            m, vector<vector<vector<bool>>>(n, 
+            vector<vector<bool>>(energyMax + 1, 
+            vector<bool>(1 << 10, false))));
+
+        // Find starting position and litter
+        for(int i=0;i<m;++i){
+            for(int j=0;j<n;++j){
+                if(grid[i][j]=='S') {
+                    q.push({i,j,energyMax,0,0});
+                    visited[i][j][energyMax][0]=true;
                 }
-            } 
-        int dx[4]={1,-1,0,0},dy[4]={0,0,1,-1};
-        queue.push({0,energy,p,r,tmp});
-        vector<vector<vector<int>>> dp(n,vector<vector<int>>(m,vector<int>(1<<k,-1)));
-        while(queue.size()){
-            auto [cst,e,i,j,state]=queue.front();
-            queue.pop();
-            if(dp[i][j][state]>=e) continue;
-            dp[i][j][state]=e;
-            if(mp.count((i*m+j)) && state&(1<<mp[(i*m+j)])) state^=(1<<mp[(i*m+j)]);
-            if(state==0) return cst;
-            if(room[i][j]=='R') e=energy;
-            if(!e) continue;    
-            for(int t=0;t<4;t++){
-                int x=dx[t]+i,y=dy[t]+j;
-                if(x<0 || y<0 || x>=n || y>=m || room[x][y]=='X') continue;
-                queue.push({cst+1,e-1,x,y,state});
+                if(grid[i][j]=='L'){
+                    litterIndex[{i,j}] = litterCount++;
+                }
             }
         }
+
+        int dirs[4][2] = {{0,1},{1,0},{0,-1},{-1,0}};
+        while(!q.empty()){
+            auto [x,y,energy,mask,steps] = q.front(); q.pop();
+
+            if(mask == (1<<litterCount)-1) return steps;
+
+            for (auto& d : dirs) {
+                int nx = x + d[0], ny = y + d[1];
+                if (nx < 0 || ny < 0 || nx >= m || ny >= n) continue;
+                if (grid[nx][ny] == 'X') continue;
+
+                // Prevent illegal move if energy is 0 and not on reset
+                if (energy == 0 && grid[x][y] != 'R') continue;
+
+                int newEnergy = energy - 1;
+                if (grid[nx][ny] == 'R') newEnergy = energyMax;
+
+                int newMask = mask;
+                if (grid[nx][ny] == 'L') {
+                    int idx = litterIndex[{nx, ny}];
+                    newMask |= (1 << idx);
+                }
+
+                if (!visited[nx][ny][newEnergy][newMask]) {
+                    visited[nx][ny][newEnergy][newMask] = true;
+                    q.push({nx, ny, newEnergy, newMask, steps + 1});
+                }
+            }
+
+        }
+
         return -1;
     }
 };
