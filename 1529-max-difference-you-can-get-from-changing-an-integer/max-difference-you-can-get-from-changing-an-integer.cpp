@@ -9,18 +9,12 @@ public:
             if(num%10>1) u=num%10;
             num/=10;
         }
-        if(u==st.top()) f=1;
+        f=u==st.top();
         while(st.size()){
-            if(st.top()==t){
-                mx=mx*10+9;
-            }else{
-                mx=mx*10+st.top();
-            }
-            if(st.top()==u){
-                mi=mi*10+f;
-            }else{
-                mi=mi*10+st.top();
-            }
+            if(st.top()==t) mx=mx*10+9;
+            else mx=mx*10+st.top();
+            if(st.top()==u) mi=mi*10+f;
+            else mi=mi*10+st.top();
             st.pop();
         }
         return mx-mi;
