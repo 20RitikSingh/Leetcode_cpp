@@ -21,20 +21,14 @@ class Solution {
         }
         return res;
     }
-    vector<int> dp[160][2];
+    vector<int> dp[160][3];
     vector<int> rec(int cur,int f,int b){
         if(dp[cur][f].size()) return dp[cur][f];
-        int profit=fur[cur];
-        if(f) profit-=p[cur]/2;
-        else profit-=p[cur];
-        //buy
+        int profit=fur[cur]-p[cur]/f;
         vector<vector<int>> v,u;
         for(int i:adj[cur]){
-            v.push_back(rec(i,1,b));
-        }
-        //not buy
-        for(int i:adj[cur]){
-            u.push_back(rec(i,0,b));
+            v.push_back(rec(i,2,b));
+            u.push_back(rec(i,1,b));
         }
         vector<int> tmp1=knapsack(v,b);
         vector<int> tmp2=knapsack(u,b);
@@ -52,6 +46,6 @@ public:
         for(auto e:edges){
             adj[e[0]-1].push_back(e[1]-1);
         }
-        return rec(0,0,budget)[budget];
+        return rec(0,1,budget)[budget];
     }
 };
