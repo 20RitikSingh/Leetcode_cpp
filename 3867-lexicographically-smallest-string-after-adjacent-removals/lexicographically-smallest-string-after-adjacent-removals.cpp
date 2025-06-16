@@ -3,7 +3,7 @@ class Solution {
     bool check(string &s,int low,int high){
         if(high<low) return 1;
         if(dp[low][high]) return dp[low][high]-1;
-        if(abs(s[low]-s[high])==1 || abs(s[low]-s[high])==25) dp[low][high]|=check(s,low+1,high-1);
+        if(abs(s[low]-s[high])%24==1) dp[low][high]|=check(s,low+1,high-1);
         for(int i=low+1;i<high-1 && !dp[low][high];i+=2) 
             dp[low][high]|=check(s,low,i)&check(s,i+1,high);
         return dp[low][high]++;
