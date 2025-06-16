@@ -1,6 +1,6 @@
 class Solution {
     using ll = long long;
-    const ll INF = 4e18;
+    const ll INF = 1e15; // use original sentinel for minimal change
 
     vector<vector<int>> adj;
     vector<int> values;
@@ -10,32 +10,26 @@ class Solution {
     pair<ll, ll> dfs(int node, int parent, int k) {
         if (dp[node][k].first != INF) return dp[node][k];
 
-        ll sumMin = values[node], sumMax = values[node];
-        ll altMin = values[node], altMax = values[node];
-
-        bool canInvert = (k <= 0);
+        ll mi = values[node], mx = values[node], mi1 = values[node], mx1 = values[node];
 
         for (int child : adj[node]) {
             if (child == parent) continue;
 
-            auto [minSub, maxSub] = dfs(child, node, max(0, k - 1));
-            sumMin += minSub;
-            sumMax += maxSub;
+            auto [x, y] = dfs(child, node, max(0, k - 1));
+            mi += x;
+            mx += y;
 
-            if (canInvert) {
-                auto [invMinSub, invMaxSub] = dfs(child, node, maxCooldown);
-                altMin += invMinSub;
-                altMax += invMaxSub;
+            if (k <= 0) {
+                auto [p, q] = dfs(child, node, maxCooldown);
+                mi1 += p;
+                mx1 += q;
             }
         }
 
-        if (canInvert) {
-            dp[node][k] = {
-                min(sumMin, -altMax),
-                max(sumMax, -altMin)
-            };
+        if (k <= 0) {
+            dp[node][k] = {min(mi, -mx1), max(mx, -mi1)};
         } else {
-            dp[node][k] = {sumMin, sumMax};
+            dp[node][k] = {mi, mx};
         }
 
         return dp[node][k];
