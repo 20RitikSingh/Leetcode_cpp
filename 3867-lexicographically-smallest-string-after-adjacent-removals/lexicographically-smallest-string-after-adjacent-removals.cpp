@@ -1,5 +1,5 @@
 class Solution {
-    int dp[250][250];
+    char dp[250][250];
     bool check(string &s,int low,int high){
         if(high<low) return 1;
         if(dp[low][high]) return dp[low][high]-1;
