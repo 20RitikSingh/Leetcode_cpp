@@ -2,13 +2,13 @@ class Solution {
     vector<vector<int>> adj;
     vector<int> fur,p;
     vector<vector<int>> dp2;
-    int rec(vector<vector<int>> &v,int b,int idx){
+    int knapsackrec(vector<vector<int>> &v,int b,int idx){
         if(b<0) return -1e9;
         if(idx==v.size()) return 0;
         if(dp2[b][idx]!=-1) return dp2[b][idx];
         int res=-1e9;
         for(int i=0;i<=b;i++){
-            res=max(res,rec(v,b-i,idx+1)+v[idx][i]);
+            res=max(res,knapsackrec(v,b-i,idx+1)+v[idx][i]);
         }
         dp2[b][idx]=res;
         return res;
@@ -17,7 +17,7 @@ class Solution {
         dp2=vector<vector<int>>(b+1,vector<int>(v.size(),-1));
         vector<int> res(b+1);
         for(int i=0;i<=b;i++){
-            res[i]=rec(v,i,0);
+            res[i]=knapsackrec(v,i,0);
         }
         return res;
     }
