@@ -1,97 +1,57 @@
-#include <vector>
-#include <algorithm>
-using namespace std;
-
-const int NINF = -10000000;
-
 class Solution {
+    vector<vector<int>> adj;
+    vector<int> fur,p;
+    vector<vector<int>> dp2;
+    int rec(vector<vector<int>> &v,int b,int idx){
+        if(b<0) return -1e9;
+        if(idx==v.size()) return 0;
+        if(dp2[b][idx]!=-1) return dp2[b][idx];
+        int res=-1e9;
+        for(int i=0;i<=b;i++){
+            res=max(res,rec(v,b-i,idx+1)+v[idx][i]);
+        }
+        dp2[b][idx]=res;
+        return res;
+    }
+    vector<int> knapsack(vector<vector<int>> &v,int b){
+        dp2=vector<vector<int>>(b+1,vector<int>(v.size(),-1));
+        vector<int> res(b+1);
+        for(int i=0;i<=b;i++){
+            res[i]=rec(v,i,0);
+        }
+        return res;
+    }
+    vector<int> dp[160][2];
+    vector<int> rec(int cur,int f,int b){
+        if(dp[cur][f].size()) return dp[cur][f];
+        int profit=fur[cur];
+        if(f) profit-=p[cur]/2;
+        else profit-=p[cur];
+        //buy
+        vector<vector<int>> v,u;
+        for(int i:adj[cur]){
+            v.push_back(rec(i,1,b));
+        }
+        //not buy
+        for(int i:adj[cur]){
+            u.push_back(rec(i,0,b));
+        }
+        vector<int> tmp1=knapsack(v,b);
+        vector<int> tmp2=knapsack(u,b);
+        for(int i=fur[cur]-profit;i<=b;i++){
+            tmp2[i]=max(tmp2[i],tmp1[i-(fur[cur]-profit)]+profit);
+        }
+        dp[cur][f]=tmp2;
+        return tmp2;
+    }
 public:
-    int maxProfit(int n, vector<int>& present, vector<int>& future, vector<vector<int>>& hierarchy, int budget) {
-        vector<vector<int>> children(n+1);
-        for (auto& edge : hierarchy) {
-            int u = edge[0], v = edge[1];
-            children[u].push_back(v);
+    int maxProfit(int n, vector<int>& present, vector<int>& future, vector<vector<int>>& edges, int budget) {
+        fur=future;
+        p=present;
+        adj.resize(n);
+        for(auto e:edges){
+            adj[e[0]-1].push_back(e[1]-1);
         }
-
-        function<pair<vector<int>, vector<int>>(int)> dfs = [&](int u) {
-            vector<int> g0(budget+1, NINF);
-            vector<int> g1(budget+1, NINF);
-            g0[0] = 0;
-            g1[0] = 0;
-
-            for (int v : children[u]) {
-                auto [res0_v, res1_v] = dfs(v);
-
-                vector<int> new_g0(budget+1, NINF);
-                for (int b1 = 0; b1 <= budget; ++b1) {
-                    if (g0[b1] == NINF) continue;
-                    for (int b2 = 0; b2 <= budget - b1; ++b2) {
-                        if (res0_v[b2] == NINF) continue;
-                        int total_b = b1 + b2;
-                        if (total_b > budget) continue;
-                        if (g0[b1] + res0_v[b2] > new_g0[total_b]) {
-                            new_g0[total_b] = g0[b1] + res0_v[b2];
-                        }
-                    }
-                }
-                g0 = move(new_g0);
-
-                vector<int> new_g1(budget+1, NINF);
-                for (int b1 = 0; b1 <= budget; ++b1) {
-                    if (g1[b1] == NINF) continue;
-                    for (int b2 = 0; b2 <= budget - b1; ++b2) {
-                        if (res1_v[b2] == NINF) continue;
-                        int total_b = b1 + b2;
-                        if (total_b > budget) continue;
-                        if (g1[b1] + res1_v[b2] > new_g1[total_b]) {
-                            new_g1[total_b] = g1[b1] + res1_v[b2];
-                        }
-                    }
-                }
-                g1 = move(new_g1);
-            }
-
-            vector<int> res0(budget+1, NINF);
-            vector<int> res1(budget+1, NINF);
-            int idx = u - 1;
-            int cost0 = present[idx];
-            int cost1 = present[idx] / 2;
-
-            for (int b = 0; b <= budget; ++b) {
-                res0[b] = g0[b];
-                res1[b] = g0[b];
-
-                if (b >= cost0) {
-                    int rem = b - cost0;
-                    if (rem >= 0 && g1[rem] != NINF) {
-                        int profit = future[idx] - cost0;
-                        if (res0[b] < profit + g1[rem]) {
-                            res0[b] = profit + g1[rem];
-                        }
-                    }
-                }
-
-                if (b >= cost1) {
-                    int rem = b - cost1;
-                    if (rem >= 0 && g1[rem] != NINF) {
-                        int profit = future[idx] - cost1;
-                        if (res1[b] < profit + g1[rem]) {
-                            res1[b] = profit + g1[rem];
-                        }
-                    }
-                }
-            }
-
-            return make_pair(res0, res1);
-        };
-
-        auto [res0_root, res1_root] = dfs(1);
-        int ans = 0;
-        for (int b = 0; b <= budget; ++b) {
-            if (res0_root[b] > ans) {
-                ans = res0_root[b];
-            }
-        }
-        return ans;
+        return rec(0,0,budget)[budget];
     }
 };
