@@ -6,22 +6,15 @@ class Solution {
         mx=min(mx,r);
         return max(0,mx-mi+1);
     }
-    long long calc(vector<int> &v){
-        long long clicks=0;
-        for(int i=1;i<16;i++){
-            clicks+=1LL*v[i]*i;
-        }  
-        return (clicks+1)/2;
-    }
 public:
     long long minOperations(vector<vector<int>>& queries) {
         long long res=0;
         for(auto q:queries){
-            vector<int> v(16);
+            long long clicks=0;
             for(int i=1;i<31;i++){
-                v[(i+1)/2]+=count(q[0],q[1],i);
+                clicks+=1LL*(i+1)/2*count(q[0],q[1],i);
             }
-            res+=calc(v);
+            res+=(clicks+1)/2;
         }
         return res;
     }
