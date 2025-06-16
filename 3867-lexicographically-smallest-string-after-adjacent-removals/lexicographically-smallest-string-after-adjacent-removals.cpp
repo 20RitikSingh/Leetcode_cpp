@@ -9,16 +9,16 @@ class Solution {
         return dp[low][high]++;
     }
     string dp2[250];
-    string rec2(string &s,int i){
+    string rec(string &s,int i){
         int n=s.size();
         if(check(s,i,n-1)) return "";
         if(dp2[i]!="") return dp2[i];
-        dp2[i]=s.substr(i,1)+rec2(s,i+1);
-        for(int j=i+2;j<n;j+=2) if(check(s,i,j-1)) dp2[i]=min(dp2[i],rec2(s,j));
+        dp2[i]=s.substr(i,1)+rec(s,i+1);
+        for(int j=i+2;j<n;j+=2) if(check(s,i,j-1)) dp2[i]=min(dp2[i],rec(s,j));
         return dp2[i];
     }
 public:
     string lexicographicallySmallestString(string s) {
-        return rec2(s,0);
+        return rec(s,0);
     }
 };
