@@ -1,27 +1,20 @@
 class Solution {
-    vector<vector<vector<long long>>> dp;
-    long long rec(int n,vector<vector<int>>& cost,int idx,int prev,int opp){
-        if(idx>=n/2) return 0;
-        if(dp[idx][prev][opp]>=0) return dp[idx][prev][opp];
-        vector<bool> v(4,0),u(4,0);
-        v[prev]=1;u[opp]=1;
-        long long res=1e18;
+    long long dp[100001][4][4];
+    long long rec(vector<vector<int>> &cost,int idx,int l,int r){
+        long long res=1e15,n=cost.size();
+        if(idx==n/2) return 0;
+        if(dp[idx][l][r]) return dp[idx][l][r]-1;
         for(int i=0;i<3;i++){
-            if(v[i]) continue;
             for(int j=0;j<3;j++){
-                if(u[j] || i==j) continue;
-                long long x=rec(n,cost,idx+1,i,j);
-                res=min(res,x+cost[idx][i]+cost[n-1-idx][j]);
+                if(i==j || i==l || j==r) continue;
+                res=min(res,rec(cost,idx+1,i,j)+cost[idx][i]+cost[n-1-idx][j]);
             }
         }
-        dp[idx][prev][opp]=res;
+        dp[idx][l][r]=res+1;
         return res;
     }
 public:
     long long minCost(int n, vector<vector<int>>& cost) {
-        dp=vector<vector<vector<long long>>>(n,vector<vector<long long>>(4,vector<long long>(4,-1)));
-        return rec(n,cost,0,3,3);
+        return rec(cost,0,3,3);
     }
 };
-
-// (23)12(13)
