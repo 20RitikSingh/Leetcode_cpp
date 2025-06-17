@@ -1,37 +1,38 @@
-class NumArray {
-    int tree[100000];
-    int n;
+struct SegmentTree{
+    int Tree[100000];
     int build(vector<int> &nums,int low,int high,int idx){
+        if(high==low) return Tree[idx]=nums[low];
         int mid=low+(high-low)/2;
-        if(high-low==1) tree[idx]=nums[low];
-        else tree[idx]=build(nums,low,mid,2*idx+1)+build(nums,mid,high,2*idx+2);
-        return tree[idx];
+        return Tree[idx]=build(nums,low,mid,2*idx+1)+build(nums,mid+1,high,2*idx+2);
     }
-    int query(int low,int high,int b,int e,int idx){
-        int mid=b+(e-b)/2;
-        if (high <= b || low >= e) return 0;
-        if(b>=low && e<=high) return tree[idx];
-        return query(low,high,b,mid,2*idx+1)+query(low,high,mid,e,2*idx+2);
+    int query(int low,int high,int l,int r,int idx=0){
+        int m=l+(r-l)/2;
+        if(low>r || high<l) return 0;
+        if(low<=l && high>=r) return Tree[idx];
+        return query(low,high,l,m,2*idx+1)+query(low,high,m+1,r,2*idx+2);
     }
-    int update(int low,int high,int idx,int i,int val){
+    int update(int i,int val,int low,int high,int idx=0){
+        if(low==high && low==i) return Tree[idx]=val;
         int mid=low+(high-low)/2;
-        if(high-low==1) tree[idx]=val;
-        else if(i>=mid) tree[idx]=tree[2*idx+1]+update(mid,high,2*idx+2,i,val);
-        else tree[idx]=tree[2*idx+2]+update(low,mid,2*idx+1,i,val);
-        return tree[idx];
+        if(i<=mid) return Tree[idx]=update(i,val,low,mid,2*idx+1)+Tree[2*idx+2];
+        else return Tree[idx]=Tree[2*idx+1]+update(i,val,mid+1,high,2*idx+2);
     }
+};
+class NumArray {
+    int n;
+    SegmentTree t;
 public:
     NumArray(vector<int>& nums) {
         n=nums.size();
-        build(nums,0,n,0);
+        t.build(nums,0,n-1,0);
     }
     
     void update(int index, int val) {
-        update(0,n,0,index,val);
+        t.update(index,val,0,n-1);
     }
     
     int sumRange(int left, int right) {
-        return query(left,right+1,0,n,0);
+        return t.query(left,right,0,n-1,0);
     }
 };
 
