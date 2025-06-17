@@ -1,7 +1,5 @@
 const int MOD = 1e9 + 7;
-const int MAXN = 100000;
 long long fact[100001], invFact[100001];
-
 long long power(int x,int y){
     if(y==0) return 1;
     long long res=power(x,y/2);
@@ -11,12 +9,11 @@ long long power(int x,int y){
 }
 struct Pre{
     Pre(){
-        fact[0] = 1;
-        for (int i = 1; i <= MAXN; ++i)
-            fact[i] = fact[i - 1] * i % MOD;
-        invFact[MAXN] = power(fact[MAXN], MOD - 2);        
-        for (int i = MAXN; i > 0; --i)         
-            invFact[i - 1] = invFact[i] * i % MOD;
+        fact[0]=invFact[0]=1;
+        for(int i=1;i<100001;i++){
+            fact[i]=fact[i-1]*i%MOD;
+            invFact[i]=invFact[i-1]*power(i,MOD-2)%MOD;
+        }
     }
 };
 Pre init;
