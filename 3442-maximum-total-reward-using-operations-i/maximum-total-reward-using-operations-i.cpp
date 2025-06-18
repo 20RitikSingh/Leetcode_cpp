@@ -1,8 +1,8 @@
 class Solution {
+    bool dp[4000];
 public:
     int maxTotalReward(vector<int>& nums) {
         sort(nums.begin(),nums.end());
-        bitset<4000> dp;
         dp[0]=1;
         for(int i:nums){
             for(int j=0;j<i;j++){
