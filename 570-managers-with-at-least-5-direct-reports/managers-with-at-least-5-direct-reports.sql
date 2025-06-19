@@ -1,0 +1,1 @@
+select e.name from Employee e where (select count(*) from Employee ee where ee.managerId=e.id)>4;
