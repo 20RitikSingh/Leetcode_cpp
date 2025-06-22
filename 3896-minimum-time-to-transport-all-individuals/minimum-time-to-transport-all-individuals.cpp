@@ -1,14 +1,10 @@
 class Solution {
+    double dp[1<<12][6][2];
     double calcmax(vector<int> &time,int msk,double stage){
         int mx=-1e9,n=time.size();
-        for(int i=0;i<n;i++){
-            if(msk&(1<<i)){
-                mx=max(mx,time[i]);
-            }
-        }
+        for(int i=0;i<n;i++) if(msk&(1<<i)) mx=max(mx,time[i]);
         return stage*mx;
     }
-    double dp[1<<12][6][2];
 public:
     double minTime(int n, int k, int m, vector<int>& time, vector<double>& mul) {
         if(k==1 && n!=1) return -1;
