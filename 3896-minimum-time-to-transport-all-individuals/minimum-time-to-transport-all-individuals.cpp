@@ -32,11 +32,11 @@ public:
                 }
                 continue;
             }
-            for(int i=msk+1;i<(1<<n);i++){
-                if((msk&i)!=msk || __builtin_popcount(i)-t>k) continue;
-                double x=calcmax(time,i^msk,mul[stage]);
-                int newstage=(stage+int(floor(x))%m)%m;
-                set.insert({x+cost,i,newstage,1});
+            for (int sup = msk; sup < (1 << n); sup = (sup + 1) | msk) {
+                if (sup == msk || __builtin_popcount(sup)-t > k) continue;                   
+                double x = calcmax(time, sup^msk, mul[stage]);
+                int newstage = (stage + int(floor(x)) % m) % m;
+                set.insert({x+cost,sup,newstage,1});
             }
         }
         return 0;
