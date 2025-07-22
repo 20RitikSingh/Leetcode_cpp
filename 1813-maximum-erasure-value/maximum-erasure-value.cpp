@@ -10,13 +10,11 @@ public:
         }
         for(int i=0;i<n;i++){
             if(mp.count(nums[i]) && mp[nums[i]]>=last){
-                last=max(last,mp[nums[i]]+1);
-                res=max(res,pre[i]-pre[last]);
-                mp[nums[i]]=i;
+                last=mp[nums[i]]+1;
             }else{
-                mp[nums[i]]=i;
                 res=max(res,pre[i+1]-pre[last]);
             }
+            mp[nums[i]]=i;
             // cout<<res<<" ";
         }
         return res;
