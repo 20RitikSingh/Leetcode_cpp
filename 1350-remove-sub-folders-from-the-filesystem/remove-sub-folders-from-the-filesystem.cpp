@@ -1,20 +1,29 @@
+class Trie{
+    unordered_set<string> set;
+public:
+    void add(string s){
+        set.insert(s);
+    }
+    bool match(string s){
+        string t;
+        for(int i=0;i<s.size();i++){
+            while(i<s.size() && s[i]!='/') t.push_back(s[i++]);
+            if(set.count(t)) return 1;
+            t.push_back('/');
+        }
+        return 0;
+    }
+};
 class Solution {
 public:
     vector<string> removeSubfolders(vector<string>& folder) {
         sort(folder.begin(),folder.end());
-        unordered_set<string> set;
-        vector<string> res;
-        for(string s:folder){
-            string t=s;
-            bool f=1;
-            res.push_back(s);
-            while(!t.empty()){
-                if(set.count(t)){ res.pop_back(); f=0; break;}
-                while(!t.empty() && t.back()!='/') t.pop_back();
-                t.pop_back();
-            }
-            if(f) set.insert(s);
+        vector<string> ans;
+        Trie t;
+        for(auto s:folder){
+            if(t.match(s)) continue;
+            else t.add(s),ans.push_back(s);
         }
-        return res;
+        return ans;
     }
 };
