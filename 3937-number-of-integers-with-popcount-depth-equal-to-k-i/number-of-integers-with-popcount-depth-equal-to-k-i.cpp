@@ -1,11 +1,13 @@
 class Solution {
+    int popdp[51];
     int popd(int x){
+        if(popdp[x]) return popdp[x];
         int c=0;
         while(x!=1){
             x=__popcount(x);
             c++;
         }
-        return c;
+        return popdp[x]=c;
     }
     long long dp[51][52][2];
     long long count(long long limit,int b,int pos=0,bool tight=0){
@@ -26,13 +28,11 @@ public:
             int d=popd(i);
             if(d==k-1 && (1LL<<i)-1<=n) v.push_back(i);
         }
-        // for(int i:v) cout<<i<<" ";cout<<endl;
         long long res=0;
         memset(dp,-1,sizeof(dp));
         for(int i:v){
             res+=count(n,i);
             if(i==1) res--;
-            // cout<<count(n,i);
         }
         return res;
     }
