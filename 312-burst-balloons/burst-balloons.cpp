@@ -1,18 +1,19 @@
 class Solution {
-    int dp[302][302];
-    vector<int> nums={1};
-    int rec(int l,int h){
-        if(l==h) return 0;
-        if(h-l==1) return nums[l-1]*nums[l]*nums[h];
-        if(dp[l][h]) return dp[l][h];
-        dp[l][h]=0;
-        for(int i=l;i<h;i++) dp[l][h]=max(dp[l][h],rec(l,i)+nums[l-1]*nums[i]*nums[h]+rec(i+1,h));
-        return dp[l][h];
+    int dp[301][301];
+    int rec(vector<int> &nums,int i,int j){
+        if(i>j) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int n=nums.size();
+        if(i==j) return (i>0?nums[i-1]:1)*nums[i]*(i<n-1?nums[i+1]:1);
+        int res=0;
+        for(int k=i;k<=j;k++)
+        res=max(res,(i>0?nums[i-1]:1)*nums[k]*(j<n-1?nums[j+1]:1)+rec(nums,i,k-1)+rec(nums,k+1,j));
+        return dp[i][j]=res;
     }
 public:
-    int maxCoins(vector<int>& v) {
-        for(int i:v) nums.push_back(i);
-        nums.push_back(1);
-        return rec(1,v.size()+1);
+    int maxCoins(vector<int>& nums) {
+        int n=nums.size();
+        memset(dp,-1,sizeof(dp));
+        return rec(nums,0,n-1);
     }
 };
